@@ -7,10 +7,8 @@ from app.models import Base
 # from models import Base
 import datetime
 
-# import urllib.parse
-
-# password = urllib.parse.quote("W0rkParty")  # Encodes special characters
-DATABASE_URL = "postgresql://wife:W0rkParty@localhost/game_catalog"
+with open("database_url.txt", "r") as file:
+    DATABASE_URL = file.read()
 
 # Create engine
 engine = create_engine(DATABASE_URL)
