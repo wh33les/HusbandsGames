@@ -20,6 +20,7 @@ class Game(Base):
     title = Column(String, nullable=False)
     platform = Column(String, nullable=False)
     release_year = Column(Integer, nullable=True)
+    region = Column(String, nullable=True)
     genre = Column(String, nullable=True)
     publisher = Column(String, nullable=True)
     opened = Column(String, nullable=True)
@@ -27,12 +28,12 @@ class Game(Base):
     price = Column(Float, nullable=True)
 
 
-class Price(Base):
-    __tablename__ = "price"
+# class Price(Base):
+#     __tablename__ = "price"
 
-    id = Column(Integer, primary_key=True, index=True)
-    game_id = Column(Integer, ForeignKey("game.id", ondelete="CASCADE"))
-    source = Column(String, nullable=False)
-    price = Column(DECIMAL(10, 2), nullable=False)
-    url = Column(String)
-    scraped_at = Column(TIMESTAMP, default=func.now())
+#     id = Column(Integer, primary_key=True, index=True)
+#     game_id = Column(Integer, ForeignKey("game.id", ondelete="CASCADE"))
+#     source = Column(String, nullable=False)
+#     price = Column(DECIMAL(10, 2), nullable=False)
+#     url = Column(String)
+#     scraped_at = Column(TIMESTAMP, default=func.now())

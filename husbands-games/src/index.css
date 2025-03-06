@@ -1,0 +1,76 @@
+/* Styles for the pages in my website */
+body {
+  background-color: #19181a;
+  font-family: Helvetica;
+  opacity: 0.9;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: Helvetica;
+  color: #19181a
+}
+
+hr {
+  border-color: #19181a
+}
+
+:link {
+  text-decoration: none;
+  color: #4d5aa0;
+}
+
+/* for unvisited links */
+:visited {
+  text-decoration: none;
+  color: #644451;
+}
+
+/* for visited links */
+a:hover {
+  text-decoration: underline;
+  color: blue;
+}
+
+/* when mouse is over link */
+div {
+  background-color: #ecf4f6;
+  color: #19181a;
+  width: 800px;
+  margin: auto;
+  padding: 18px;
+  /*padding-top:0; */
+  opacity: 1.0;
+  /*border:2px solid #BADA55*/
+  /* bad ass border, for debugging */
+  overflow: hidden;
+}
+
+.buttons {
+  width: 160px;
+  float: left;
+  padding: 0;
+}
+
+figure {
+  margin: 0;
+}
+
+.hidden {
+  padding: 0;
+  display: none;
+}
+
+.equation {
+  padding: 0;
+  width: 600px;
+  margin: -16px;
+  margin-left: 80px;
+  margin-right: 120px;
+}
+
+li p {
+  margin-top: 5px;
+}

@@ -9,6 +9,7 @@ class Game(BaseModel):
     title: str
     platform: str
     release_year: int
+    region: Optional[str] = None
     genre: Optional[str] = None
     publisher: Optional[str] = None
     opened: Optional[bool] = True
@@ -23,6 +24,7 @@ class GameCreate(BaseModel):
     title: str
     platform: str
     release_year: int
+    region: Optional[str] = None
     genre: Optional[str] = None
     publisher: Optional[str] = None
     opened: Optional[bool] = True
@@ -33,6 +35,7 @@ class GameUpdate(BaseModel):
     title: Optional[str] = None
     platform: Optional[str] = None
     release_year: Optional[int] = None
+    region: Optional[str] = None
     genre: Optional[str] = None
     publisher: Optional[str] = None
     opened: Optional[bool] = True
@@ -44,6 +47,7 @@ class GameResponse(BaseModel):
     title: str
     platform: str
     release_year: int
+    region: Optional[str] = None
     genre: Optional[str] = None
     publisher: str
     opened: Optional[bool] = True

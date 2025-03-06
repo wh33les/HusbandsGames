@@ -5,11 +5,20 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 from pydantic import BaseModel
 from . import models, crud, schemas, database
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 # FastAPI app
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Change this to your frontend URL in production
+    allow_credentials=True,
+    allow_methods=["*"], # Allows all HTTP methods
+    allow_headers=["*"], # Allows all headers
+)
 
 # Dependency to get the database session
 def get_db():
