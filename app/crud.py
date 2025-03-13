@@ -1,6 +1,6 @@
 # app/crud.py
 from sqlalchemy.orm import Session
-from . import models, schemas, scraper
+from app import models, schemas, scraper
 
 
 # Function to create a new game in the database

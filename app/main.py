@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 from pydantic import BaseModel
-from . import models, crud, schemas, database
+from app import models, crud, schemas, database
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -14,7 +14,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Change this to your frontend URL in production
+    allow_origins=["http://wh33les.github.io/HusbandsGames"],  # Change this to your frontend URL in production
     allow_credentials=True,
     allow_methods=["*"], # Allows all HTTP methods
     allow_headers=["*"], # Allows all headers
@@ -29,9 +29,9 @@ def get_db():
         db.close()
 
 
-# @app.get("/")
-# def read_root():
-#     return {"message": "Hello World"}
+@app.get("/")
+def read_root():
+    return {"message": "Hello World"}
 
 
 # @app.get("/test/")
