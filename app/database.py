@@ -1,3 +1,4 @@
+import os
 from sqlalchemy import create_engine  # , Column, Integer, String, Float, TIMESTAMP
 
 # from sqlalchemy.ext.declarative import declarative_base
@@ -7,8 +8,7 @@ from app.models import Base
 # from models import Base
 import datetime
 
-with open("database_url.txt", "r") as file:
-    DATABASE_URL = file.read()
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Create engine
 engine = create_engine(DATABASE_URL)
