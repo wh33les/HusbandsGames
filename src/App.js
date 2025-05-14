@@ -4,7 +4,7 @@ const App = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/games') // Replace with your FastAPI endpoint
+    fetch('http://13.53.175.140:8000/games/') // Replace with your FastAPI endpoint
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error('Error fetching data: ', error));
