@@ -14,8 +14,8 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-	"http://wh33les.github.io/HusbandsGames",
-	"https://localhost:3000"],  # Change this to your frontend URL in production
+	"https://wh33les.github.io/HusbandsGames",
+	"http://localhost:3000"],  # Change this to your frontend URL in production
     allow_credentials=True,
     allow_methods=["*"], # Allows all HTTP methods
     allow_headers=["*"], # Allows all headers
