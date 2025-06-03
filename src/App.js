@@ -70,4 +70,11 @@ const App = () => {
   );
 };
 
+// Add to your App.js or index.js
+useEffect(() => {
+  if (window.location.protocol === 'http:' && window.location.hostname !== 'localhost') {
+    window.location.href = window.location.href.replace('http:', 'https:');
+  }
+}, []);
+
 export default App;
