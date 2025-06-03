@@ -1,4 +1,3 @@
-# app/main.py
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy import create_engine, Column, Integer, String, Float, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base
@@ -14,7 +13,9 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://wh33les.github.io/HusbandsGames"],  # Change this to your frontend URL in production
+    allow_origins=[
+	"https://wh33les.github.io/HusbandsGames",
+	"http://localhost:3000"],  # Change this to your frontend URL in production
     allow_credentials=True,
     allow_methods=["*"], # Allows all HTTP methods
     allow_headers=["*"], # Allows all headers
