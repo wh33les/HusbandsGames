@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_container
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  api:
+    build:
+      context: .  # This refers to the root directory where Dockerfile and app are located
+      dockerfile: Dockerfile  # This is optional if your Dockerfile is named 'Dockerfile' and in the same directory as the context
+    volumes:
+      - ./app:/app  # Ensures that your 'app' directory is correctly mounted inside the container
+    ports:
+      - "8000:8000"
+    container_name: fastapi_app
+    restart: always
+    depends_on:
+      - db
+    env_file:
+      - .env
+    command: [ "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" ]
+
+volumes:
+  postgres_data:
