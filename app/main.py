@@ -1,5 +1,3 @@
-# Update your app/main.py file on the EC2 server
-
 from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -8,9 +6,10 @@ from datetime import datetime, timedelta
 import jwt
 import hashlib
 from typing import Optional
+from sqlalchemy.orm import Session
 
 # Your existing imports (keep these)
-# from . import models, crud, schemas, database
+from . import models, crud, schemas, database
 
 app = FastAPI()
 
@@ -25,6 +24,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Dependency to get the database session
+def get_db():
+    db = database.SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 
 # Security
 security = HTTPBearer()
@@ -104,11 +112,16 @@ def verify_admin_token(credentials: HTTPAuthorizationCredentials = Depends(secur
         raise HTTPException(status_code=401, detail="Invalid token")
 
 # Public Routes (no authentication required)
-@app.get("/api/games")
-async def get_games():
-    # Your existing code to get games from database
-    # This should work without authentication
-    pass
+# Route to get all games
+@app.get("/api/games/")
+def get_games(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_games(db=db, skip=skip, limit=limit)
+
+
+# Route to get a game by ID
+@app.get("/api/games/{game_id}")
+def get_game(game_id: int, db: Session = Depends(get_db)):
+    return crud.get_game(db=db, game_id=game_id)
 
 @app.get("/")
 async def root():
