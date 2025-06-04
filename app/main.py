@@ -132,7 +132,7 @@ async def health_check():
     return {"status": "healthy"}
 
 # Admin-only Routes
-@app.post("/api/login", response_model=LoginResponse)
+@app.post("/login", response_model=LoginResponse)
 async def admin_login(login_data: LoginRequest):
     if (login_data.username != ADMIN_USER["username"] or 
         not verify_password(login_data.password, ADMIN_USER["password_hash"])):
@@ -147,11 +147,11 @@ async def admin_login(login_data: LoginRequest):
         user={"username": ADMIN_USER["username"], "name": ADMIN_USER["name"]}
     )
 
-@app.get("/api/admin/me")
+@app.get("/admin/me")
 async def get_current_admin(current_user: str = Depends(verify_admin_token)):
     return {"username": ADMIN_USER["username"], "name": ADMIN_USER["name"]}
 
-@app.post("/api/admin/games", response_model=GameResponse)
+@app.post("/admin/games", response_model=GameResponse)
 async def create_game(game: GameCreate, current_user: str = Depends(verify_admin_token), db: Session = Depends(get_db)):
     # Create a new game using your existing models
     db_game = models.Game(
@@ -182,7 +182,7 @@ async def create_game(game: GameCreate, current_user: str = Depends(verify_admin
         created_at=db_game.created_at
     )
 
-@app.put("/api/admin/games/{game_id}", response_model=GameResponse)
+@app.put("/admin/games/{game_id}", response_model=GameResponse)
 async def update_game(
     game_id: int, 
     game_update: GameUpdate, 
@@ -209,7 +209,7 @@ async def update_game(
         platform="Updated Platform"
     )
 
-@app.delete("/api/admin/games/{game_id}")
+@app.delete("/admin/games/{game_id}")
 async def delete_game(game_id: int, current_user: str = Depends(verify_admin_token)):
     # Here you'll integrate with your existing database code
     # Example:
@@ -222,3 +222,14 @@ async def delete_game(game_id: int, current_user: str = Depends(verify_admin_tok
     # return {"message": "Game deleted successfully"}
     
     return {"message": f"Game {game_id} deleted successfully"}
+
+@app.get("/debug")
+async def debug_routes():
+    routes = []
+    for route in app.routes:
+        if hasattr(route, 'methods') and hasattr(route, 'path'):
+            routes.append({
+                "path": route.path,
+                "methods": list(route.methods)
+            })
+    return {"available_routes": routes}
