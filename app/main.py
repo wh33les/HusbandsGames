@@ -1,24 +1,28 @@
-from fastapi import FastAPI, HTTPException, Depends
-from sqlalchemy import create_engine, Column, Integer, String, Float, TIMESTAMP
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Session, sessionmaker
-from pydantic import BaseModel
-from app import models, crud, schemas, database
+from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from pydantic import BaseModel
+from datetime import datetime, timedelta
+import jwt
+import hashlib
+from typing import Optional
+from sqlalchemy.orm import Session
 
+# Your existing imports (keep these)
+from . import models, crud, schemas, database
 
-
-# FastAPI app
 app = FastAPI()
 
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-	"https://wh33les.github.io/HusbandsGames",
-	"http://localhost:3000"],  # Change this to your frontend URL in production
+        "http://localhost:3000",
+        "https://wh33les.github.io"
+    ],
     allow_credentials=True,
-    allow_methods=["*"], # Allows all HTTP methods
-    allow_headers=["*"], # Allows all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Dependency to get the database session
@@ -30,52 +34,84 @@ def get_db():
         db.close()
 
 
-@app.get("/")
-def read_root():
-    return {"message": "Hello World"}
+# Security
+security = HTTPBearer()
+SECRET_KEY = "your-secret-key-change-this-in-production"  # Change this!
+ALGORITHM = "HS256"
 
+# Simple admin user (in production, use environment variables)
+ADMIN_USER = {
+    "username": "admin",
+    "password_hash": "e954ef868c2f62ada72e590296dc2c3836d42130b4cd648ed211798d71806376",  # "W0rkP@rty"
+    "name": "Administrator"
+}
 
-# @app.get("/test/")
-# def test_route():
-#     return {"message": "Test route works!"}
+# Pydantic models
+class LoginRequest(BaseModel):
+    username: str
+    password: str
 
+class LoginResponse(BaseModel):
+    access_token: str
+    user: dict
 
-# Route to create a new game
-@app.post("/games/")
-def create_game(game: schemas.GameCreate, db: Session = Depends(get_db)):
-    return crud.create_game(db=db, game=game)
+class GameCreate(BaseModel):
+    title: str
+    platform: Optional[str] = None
+    genre: Optional[str] = None
+    release_year: Optional[int] = None
+    price: Optional[float] = None
+    region: Optional[str] = None
+    publisher: Optional[str] = None
+    opened: Optional[bool] = False
 
+class GameUpdate(BaseModel):
+    title: Optional[str] = None
+    platform: Optional[str] = None
+    genre: Optional[str] = None
+    release_year: Optional[int] = None
+    price: Optional[float] = None
+    region: Optional[str] = None
+    publisher: Optional[str] = None
+    opened: Optional[bool] = None
 
-# @app.put("/games/{game_id}/update_price")
-# def update_game_price(game_id: int, db: Session = Depends(get_db)):
-#     return crud.update_game_price(db=db, game_id=game_id)
+class GameResponse(BaseModel):
+    id: int
+    title: str
+    platform: Optional[str] = None
+    genre: Optional[str] = None
+    release_year: Optional[int] = None
+    price: Optional[float] = None
+    region: Optional[str] = None
+    publisher: Optional[str] = None
+    opened: Optional[bool] = False
+    created_at: datetime
 
+# Helper functions
+def hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()
 
-# Route to update a game
-@app.patch("/games/{game_id}", response_model=schemas.GameResponse)
-def update_game(
-    game_id: int, game_update: schemas.GameUpdate, db: Session = Depends(get_db)
-):
-    # Retrieve the existing game from the database
-    game = db.query(models.Game).filter(models.Game.id == game_id).first()
-    if not game:
-        raise HTTPException(status_code=404, detail="Game not found")
+def verify_password(password: str, password_hash: str) -> bool:
+    return hash_password(password) == password_hash
 
-    # Update the game attributes with provided values
-    for key, value in game_update.dict(exclude_unset=True).items():
-        setattr(game, key, value)
+def create_access_token(data: dict):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(hours=24)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
 
-    # Commit the changes to the database
-    db.commit()
-    db.refresh(game)
+def verify_admin_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    try:
+        payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username != "admin":
+            raise HTTPException(status_code=403, detail="Admin access required")
+        return username
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
-    # Create a response dictionary
-    response = game.dict()
-    response["message"] = f"Successfully updated game no. {game.id}, {game.title}."
-
-    return response
-
-
+# Public Routes (no authentication required)
 # Route to get all games
 @app.get("/games/")
 def get_games(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -87,28 +123,112 @@ def get_games(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 def get_game(game_id: int, db: Session = Depends(get_db)):
     return crud.get_game(db=db, game_id=game_id)
 
+@app.get("/")
+async def root():
+    return {"message": "Husband's Games API"}
 
-# # Route to update a game's price
-# @app.put("/games/{game_id}")
-# def update_game_price(game_id: int, price: float, db: Session = Depends(get_db)):
-#     return crud.update_game_price(db=db, game_id=game_id)
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
 
+# Admin-only Routes
+@app.post("/login", response_model=LoginResponse)
+async def admin_login(login_data: LoginRequest):
+    if (login_data.username != ADMIN_USER["username"] or 
+        not verify_password(login_data.password, ADMIN_USER["password_hash"])):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid admin credentials"
+        )
+    
+    access_token = create_access_token(data={"sub": ADMIN_USER["username"]})
+    return LoginResponse(
+        access_token=access_token,
+        user={"username": ADMIN_USER["username"], "name": ADMIN_USER["name"]}
+    )
 
-# Route to delete a game
-@app.delete("/games/{game_id}")
-def delete_game(game_id: int, db: Session = Depends(get_db)):
-    return crud.delete_game(db=db, game_id=game_id)
+@app.get("/admin/me")
+async def get_current_admin(current_user: str = Depends(verify_admin_token)):
+    return {"username": ADMIN_USER["username"], "name": ADMIN_USER["name"]}
 
+@app.post("/admin/games", response_model=GameResponse)
+async def create_game(game: GameCreate, current_user: str = Depends(verify_admin_token), db: Session = Depends(get_db)):
+    # Create a new game using your existing models
+    db_game = models.Game(
+        title=game.title,
+        platform=game.platform,
+        genre=game.genre,
+        release_year=game.release_year,
+        price=game.price,
+        region=game.region,
+        publisher=game.publisher,
+        opened=game.opened
+    )
+    
+    db.add(db_game)
+    db.commit()
+    db.refresh(db_game)
+    
+    return GameResponse(
+        id=db_game.id,
+        title=db_game.title,
+        platform=db_game.platform,
+        genre=db_game.genre,
+        release_year=db_game.release_year,
+        price=db_game.price,
+        region=db_game.region,
+        publisher=db_game.publisher,
+        opened=db_game.opened,
+        created_at=db_game.created_at
+    )
 
-# Update all prices
-# @app.post("/update-prices/")
-# def update_prices(background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
-#     """Run price update in the background."""
-#     background_tasks.add_task(update_game_prices, db)
-#     return {"message": "Price update started"}
+@app.put("/admin/games/{game_id}", response_model=GameResponse)
+async def update_game(
+    game_id: int, 
+    game_update: GameUpdate, 
+    current_user: str = Depends(verify_admin_token)
+):
+    # Here you'll integrate with your existing database code
+    # Example:
+    # db_game = db.query(models.Game).filter(models.Game.id == game_id).first()
+    # if not db_game:
+    #     raise HTTPException(status_code=404, detail="Game not found")
+    # 
+    # for field, value in game_update.dict(exclude_unset=True).items():
+    #     setattr(db_game, field, value)
+    # 
+    # db.commit()
+    # db.refresh(db_game)
+    # return db_game
+    
+    # Placeholder response for now:
+    return GameResponse(
+        id=game_id,
+        created_at=datetime.utcnow(),
+        title="Updated Game",
+        platform="Updated Platform"
+    )
 
-# @app.post("/update-prices/")
-# def update_prices(db: Session = Depends(get_db)):
-#     """API endpoint to scrape and update game prices."""
-#     crud.update_game_prices(db)
-#     return {"message": "Prices updated successfully"}
+@app.delete("/admin/games/{game_id}")
+async def delete_game(game_id: int, current_user: str = Depends(verify_admin_token), db: Session = Depends(get_db)):
+    # Find the game in the database
+    db_game = db.query(models.Game).filter(models.Game.id == game_id).first()
+    if not db_game:
+        raise HTTPException(status_code=404, detail="Game not found")
+    
+    # Delete the game
+    db.delete(db_game)
+    db.commit()
+    
+    return {"message": f"Game '{db_game.title}' deleted successfully"}
+
+@app.get("/debug")
+async def debug_routes():
+    routes = []
+    for route in app.routes:
+        if hasattr(route, 'methods') and hasattr(route, 'path'):
+            routes.append({
+                "path": route.path,
+                "methods": list(route.methods)
+            })
+    return {"available_routes": routes}

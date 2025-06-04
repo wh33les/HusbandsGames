@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // =============================================================================
 // HUSBAND'S GAMES DATABASE - MAIN APPLICATION COMPONENT
 // =============================================================================
@@ -403,27 +404,323 @@ const App = () => {
   // Handle successful admin login
   const handleAdminLogin = (authToken, userData) => {
     // Update component state
+=======
+// Updated App.js - Public access with optional admin login
+
+import React, { useState, useEffect } from 'react';
+import config from './config';
+import './App.css';
+
+// Simple Admin Login Modal
+const AdminLoginModal = ({ isOpen, onClose, onLogin, isLoading }) => {
+  const [credentials, setCredentials] = useState({ username: 'admin', password: '' });
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const response = await fetch(`${config.API_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid admin credentials');
+      }
+
+      const data = await response.json();
+      onLogin(data.access_token, data.user);
+      onClose();
+      setCredentials({ username: 'admin', password: '' });
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay">
+      <div className="admin-login-modal">
+        <div className="modal-header">
+          <h3>Admin Login</h3>
+          <button onClick={onClose} className="close-btn">&times;</button>
+        </div>
+        <form onSubmit={handleSubmit} className="admin-login-form">
+          <div className="form-group">
+            <label>Username:</label>
+            <input
+              type="text"
+              value={credentials.username}
+              onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+              required
+              readOnly
+            />
+          </div>
+          <div className="form-group">
+            <label>Password:</label>
+            <input
+              type="password"
+              value={credentials.password}
+              onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+              placeholder="Enter admin password"
+              required
+            />
+          </div>
+          {error && <div className="error-message">{error}</div>}
+          <div className="modal-actions">
+            <button type="button" onClick={onClose} className="cancel-btn">
+              Cancel
+            </button>
+            <button type="submit" disabled={isLoading} className="submit-btn">
+              {isLoading ? 'Logging in...' : 'Login'}
+            </button>
+          </div>
+        </form>
+        <div className="login-help">
+          <p><small>Admin login is required to add, edit, or delete games.</small></p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Add Game Modal Component
+const AddGameModal = ({ isOpen, onClose, onAddGame, isLoading }) => {
+  const [gameData, setGameData] = useState({
+    title: '',
+    platform: '',
+    genre: '',
+    release_year: '',
+    price: '',
+    region: '',
+    publisher: '',
+    opened: false
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const processedData = {
+      ...gameData,
+      release_year: gameData.release_year ? parseInt(gameData.release_year) : null,
+      price: gameData.price ? parseFloat(gameData.price) : null,
+    };
+
+    await onAddGame(processedData);
+    setGameData({
+      title: '',
+      platform: '',
+      genre: '',
+      release_year: '',
+      price: '',
+      region: '',
+      publisher: '',
+      opened: false
+    });
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h3>Add New Game</h3>
+          <button onClick={onClose} className="close-btn">&times;</button>
+        </div>
+        <form onSubmit={handleSubmit} className="add-game-form">
+          <div className="form-row">
+            <div className="form-group">
+              <label>Title *</label>
+              <input
+                type="text"
+                value={gameData.title}
+                onChange={(e) => setGameData({ ...gameData, title: e.target.value })}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Platform</label>
+              <input
+                type="text"
+                value={gameData.platform}
+                onChange={(e) => setGameData({ ...gameData, platform: e.target.value })}
+                placeholder="e.g., PS5, PC, Switch"
+              />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Genre</label>
+              <input
+                type="text"
+                value={gameData.genre}
+                onChange={(e) => setGameData({ ...gameData, genre: e.target.value })}
+                placeholder="e.g., Action, RPG, Strategy"
+              />
+            </div>
+            <div className="form-group">
+              <label>Release Year</label>
+              <input
+                type="number"
+                value={gameData.release_year}
+                onChange={(e) => setGameData({ ...gameData, release_year: e.target.value })}
+                min="1970"
+                max="2030"
+              />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Price</label>
+              <input
+                type="number"
+                step="0.01"
+                value={gameData.price}
+                onChange={(e) => setGameData({ ...gameData, price: e.target.value })}
+                placeholder="0.00"
+              />
+            </div>
+            <div className="form-group">
+              <label>Region</label>
+              <input
+                type="text"
+                value={gameData.region}
+                onChange={(e) => setGameData({ ...gameData, region: e.target.value })}
+                placeholder="e.g., US, EU, JP"
+              />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Publisher</label>
+              <input
+                type="text"
+                value={gameData.publisher}
+                onChange={(e) => setGameData({ ...gameData, publisher: e.target.value })}
+              />
+            </div>
+            <div className="form-group checkbox-group">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={gameData.opened}
+                  onChange={(e) => setGameData({ ...gameData, opened: e.target.checked })}
+                />
+                Opened/Played
+              </label>
+            </div>
+          </div>
+          <div className="modal-actions">
+            <button type="button" onClick={onClose} className="cancel-btn">
+              Cancel
+            </button>
+            <button type="submit" disabled={isLoading} className="submit-btn">
+              {isLoading ? 'Adding...' : 'Add Game'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// Main App Component
+const App = () => {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+
+  // Admin authentication state
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminUser, setAdminUser] = useState(null);
+  const [adminToken, setAdminToken] = useState(null);
+
+  // Modal state
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [isAddingGame, setIsAddingGame] = useState(false);
+
+  // Check for existing admin token on load
+  useEffect(() => {
+    const savedToken = localStorage.getItem('admin_token');
+    const savedUser = localStorage.getItem('admin_user');
+
+    if (savedToken && savedUser) {
+      setAdminToken(savedToken);
+      setAdminUser(JSON.parse(savedUser));
+      setIsAdmin(true);
+    }
+  }, []);
+
+  // Fetch games data (public - no authentication required)
+  useEffect(() => {
+    fetchGames();
+  }, []);
+
+  const fetchGames = async () => {
+    const apiUrl = `${config.API_URL}/games/`;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const gamesData = await response.json();
+      setData(gamesData);
+      setError(null);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+      setError('Failed to load games data. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAdminLogin = (authToken, userData) => {
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
     setAdminToken(authToken);
     setAdminUser(userData);
     setIsAdmin(true);
 
+<<<<<<< HEAD
     // Save authentication data to browser's local storage for persistence
+=======
+    // Save to localStorage
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
     localStorage.setItem('admin_token', authToken);
     localStorage.setItem('admin_user', JSON.stringify(userData));
   };
 
+<<<<<<< HEAD
   // Handle admin logout
   const handleAdminLogout = () => {
     // Clear component state
+=======
+  const handleAdminLogout = () => {
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
     setAdminToken(null);
     setAdminUser(null);
     setIsAdmin(false);
 
+<<<<<<< HEAD
     // Remove authentication data from local storage
+=======
+    // Clear localStorage
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
     localStorage.removeItem('admin_token');
     localStorage.removeItem('admin_user');
   };
 
+<<<<<<< HEAD
   // =============================================================================
   // GAME MANAGEMENT FUNCTIONS
   // =============================================================================
@@ -433,20 +730,34 @@ const App = () => {
     setIsAddingGame(true); // Show loading state on add button
     try {
       // Send POST request to add new game
+=======
+  const handleAddGame = async (gameData) => {
+    setIsAddingGame(true);
+    try {
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
       const response = await fetch(`${config.API_URL}/admin/games`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+<<<<<<< HEAD
           'Authorization': `Bearer ${adminToken}`, // Include admin token for authentication
         },
         body: JSON.stringify(gameData), // Convert game data to JSON
       });
 
       // Check if request was successful
+=======
+          'Authorization': `Bearer ${adminToken}`,
+        },
+        body: JSON.stringify(gameData),
+      });
+
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
       if (!response.ok) {
         throw new Error('Failed to add game');
       }
 
+<<<<<<< HEAD
       // Parse the newly created game from response
       const newGame = await response.json();
 
@@ -462,10 +773,20 @@ const App = () => {
       setError('Failed to add game. Please try again.');
     } finally {
       // Hide loading state
+=======
+      const newGame = await response.json();
+      setData([...data, newGame]);
+      setShowAddModal(false);
+    } catch (error) {
+      console.error('Error adding game:', error);
+      setError('Failed to add game. Please try again.');
+    } finally {
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
       setIsAddingGame(false);
     }
   };
 
+<<<<<<< HEAD
   // Function to delete a game from the database
   const handleDeleteGame = async (gameId, gameTitle) => {
     // Show confirmation dialog to prevent accidental deletions
@@ -526,12 +847,32 @@ const App = () => {
       const bValue = b[sortConfig.key]; // Value from second item
 
       // Compare values and return sort order
+=======
+  // Sorting function
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Sort data based on current sort config
+  const sortedData = React.useMemo(() => {
+    if (!sortConfig.key) return data;
+
+    return [...data].sort((a, b) => {
+      const aValue = a[sortConfig.key];
+      const bValue = b[sortConfig.key];
+
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
       if (aValue < bValue) {
         return sortConfig.direction === 'asc' ? -1 : 1;
       }
       if (aValue > bValue) {
         return sortConfig.direction === 'asc' ? 1 : -1;
       }
+<<<<<<< HEAD
       return 0; // Values are equal
     });
   }, [data, sortConfig]); // Only recalculate when data or sortConfig changes
@@ -541,10 +882,18 @@ const App = () => {
   // =============================================================================
 
   // Function to export all games data to CSV file
+=======
+      return 0;
+    });
+  }, [data, sortConfig]);
+
+  // CSV export function
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
   const exportToCSV = () => {
     // Don't export if there's no data
     if (!data.length) return;
 
+<<<<<<< HEAD
     // Get all unique column names from all games (in case some games have different fields)
     const allKeys = [...new Set(data.flatMap(item => Object.keys(item)))];
 
@@ -595,17 +944,51 @@ const App = () => {
       return <span className="sort-icon">↕️</span>;
     }
     // Show up or down arrow based on sort direction
+=======
+    const allKeys = [...new Set(data.flatMap(item => Object.keys(item)))];
+    const header = allKeys.join(',');
+    const rows = data.map((item) =>
+      allKeys.map(key => {
+        const value = item[key];
+        if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+          return `"${value.replace(/"/g, '""')}"`;
+        }
+        return value ?? '';
+      }).join(',')
+    );
+
+    const csvContent = [header, ...rows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `games_data_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+  };
+
+  const getColumnHeaders = () => {
+    if (!data.length) return [];
+    return [...new Set(data.flatMap(game => Object.keys(game)))];
+  };
+
+  const getSortIcon = (columnKey) => {
+    if (sortConfig.key !== columnKey) {
+      return <span className="sort-icon">↕️</span>;
+    }
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
     return sortConfig.direction === 'asc' ?
       <span className="sort-icon active">↑</span> :
       <span className="sort-icon active">↓</span>;
   };
 
+<<<<<<< HEAD
   // =============================================================================
   // CONDITIONAL RENDERING
   // =============================================================================
   // Show different content based on application state
 
   // Show loading screen while fetching data
+=======
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
   if (isLoading) {
     return (
       <div className="container">
@@ -615,7 +998,10 @@ const App = () => {
     );
   }
 
+<<<<<<< HEAD
   // Show error screen if something went wrong
+=======
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
   if (error) {
     return (
       <div className="container">
@@ -626,6 +1012,7 @@ const App = () => {
     );
   }
 
+<<<<<<< HEAD
   // =============================================================================
   // MAIN APPLICATION RENDER
   // =============================================================================
@@ -635,17 +1022,27 @@ const App = () => {
     <div className="container">
 
       {/* Header section with title and admin controls */}
+=======
+  return (
+    <div className="container">
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
       <div className="header">
         <h1>Husband's Games</h1>
         <div className="header-actions">
           {isAdmin ? (
+<<<<<<< HEAD
             // If logged in as admin, show user info and logout button
+=======
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
             <div className="admin-info">
               <span>👤 {adminUser?.name}</span>
               <button onClick={handleAdminLogout} className="logout-btn">Logout</button>
             </div>
           ) : (
+<<<<<<< HEAD
             // If not logged in, show admin login button
+=======
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
             <button onClick={() => setShowAdminLogin(true)} className="admin-login-btn">
               🔐 Admin Login
             </button>
@@ -653,29 +1050,42 @@ const App = () => {
         </div>
       </div>
 
+<<<<<<< HEAD
       {/* Controls section with stats and action buttons */}
+=======
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
       <div className="controls">
         <div className="stats">
           <span className="games-count">Total games: {data.length}</span>
           <span className="columns-count">Columns: {getColumnHeaders().length}</span>
         </div>
         <div className="actions">
+<<<<<<< HEAD
           {/* Only show "Add Game" button if user is admin */}
+=======
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
           {isAdmin && (
             <button onClick={() => setShowAddModal(true)} className="add-btn">
               ➕ Add Game
             </button>
           )}
+<<<<<<< HEAD
           {/* CSV export is available to everyone */}
+=======
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
           <button onClick={exportToCSV} className="export-btn">
             📊 Export to CSV
           </button>
         </div>
       </div>
 
+<<<<<<< HEAD
       {/* Main content area */}
       {data.length === 0 ? (
         // Show empty state if no games exist
+=======
+      {data.length === 0 ? (
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
         <div className="empty-state">
           <p>No games found.</p>
           {isAdmin && (
@@ -685,6 +1095,7 @@ const App = () => {
           )}
         </div>
       ) : (
+<<<<<<< HEAD
         // Show games table if data exists
         <div className="table-container">
           <table className="games-table">
@@ -697,10 +1108,21 @@ const App = () => {
                   <th
                     key={header}
                     onClick={() => handleSort(header)} // Make header clickable for sorting
+=======
+        <div className="table-container">
+          <table className="games-table">
+            <thead>
+              <tr>
+                {getColumnHeaders().map((header) => (
+                  <th
+                    key={header}
+                    onClick={() => handleSort(header)}
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
                     className="sortable-header"
                   >
                     <div className="header-content">
                       <span className="header-text">{header}</span>
+<<<<<<< HEAD
                       {getSortIcon(header)} {/* Show sort direction indicator */}
                     </div>
                   </th>
@@ -740,6 +1162,24 @@ const App = () => {
                       </button>
                     </td>
                   )}
+=======
+                      {getSortIcon(header)}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {sortedData.map((game, index) => (
+                <tr key={game.id || index}>
+                  {getColumnHeaders().map((header) => (
+                    <td key={header}>
+                      {game[header] !== null && game[header] !== undefined
+                        ? String(game[header])
+                        : ''}
+                    </td>
+                  ))}
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
                 </tr>
               ))}
             </tbody>
@@ -747,6 +1187,7 @@ const App = () => {
         </div>
       )}
 
+<<<<<<< HEAD
       {/* MODAL COMPONENTS */}
       {/* These are conditionally rendered based on state */}
 
@@ -765,12 +1206,32 @@ const App = () => {
           onClose={() => setShowAddModal(false)}     // Function to close the modal
           onAddGame={handleAddGame}                  // Function to handle adding a game
           isLoading={isAddingGame}                   // Whether game addition is in progress
+=======
+      {/* Admin Login Modal */}
+      <AdminLoginModal
+        isOpen={showAdminLogin}
+        onClose={() => setShowAdminLogin(false)}
+        onLogin={handleAdminLogin}
+        isLoading={isLoading}
+      />
+
+      {/* Add Game Modal - Only shown when admin is logged in */}
+      {isAdmin && (
+        <AddGameModal
+          isOpen={showAddModal}
+          onClose={() => setShowAddModal(false)}
+          onAddGame={handleAddGame}
+          isLoading={isAddingGame}
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
         />
       )}
     </div>
   );
 };
 
+<<<<<<< HEAD
 // Export the App component as the default export
 // This allows other files to import this component
+=======
+>>>>>>> 77929000a467133b725515597145e4bb8c6901ca
 export default App;
