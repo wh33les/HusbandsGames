@@ -46,6 +46,7 @@ ADMIN_USER = {
     "name": "Administrator"
 }
 
+
 # Pydantic models
 class LoginRequest(BaseModel):
     username: str
@@ -115,7 +116,26 @@ def verify_admin_token(credentials: HTTPAuthorizationCredentials = Depends(secur
 # Route to get all games
 @app.get("/games/")
 def get_games(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return crud.get_games(db=db, skip=skip, limit=limit)
+    games = crud.get_games(db=db, skip=skip, limit=limit)
+    
+    # Reorder the columns by creating a new list with desired order
+    reordered_games = []
+    for game in games:
+        reordered_game = {
+            "title": game.title,           # 1st column
+            "platform": game.platform,     # 2nd column  
+            "genre": game.genre,           # 3rd column
+            "release_year": game.release_year, # 4th column
+            "price": game.price,           # 5th column
+            "region": game.region,         # 6th column
+            "publisher": game.publisher,   # 7th column
+            "opened": game.opened,         # 8th column
+            "id": game.id,                 # 9th column
+            "created_at": game.created_at  # 10th column
+        }
+        reordered_games.append(reordered_game)
+    
+    return reordered_games
 
 
 # Route to get a game by ID
