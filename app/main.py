@@ -210,18 +210,17 @@ async def update_game(
     )
 
 @app.delete("/admin/games/{game_id}")
-async def delete_game(game_id: int, current_user: str = Depends(verify_admin_token)):
-    # Here you'll integrate with your existing database code
-    # Example:
-    # db_game = db.query(models.Game).filter(models.Game.id == game_id).first()
-    # if not db_game:
-    #     raise HTTPException(status_code=404, detail="Game not found")
-    # 
-    # db.delete(db_game)
-    # db.commit()
-    # return {"message": "Game deleted successfully"}
+async def delete_game(game_id: int, current_user: str = Depends(verify_admin_token), db: Session = Depends(get_db)):
+    # Find the game in the database
+    db_game = db.query(models.Game).filter(models.Game.id == game_id).first()
+    if not db_game:
+        raise HTTPException(status_code=404, detail="Game not found")
     
-    return {"message": f"Game {game_id} deleted successfully"}
+    # Delete the game
+    db.delete(db_game)
+    db.commit()
+    
+    return {"message": f"Game '{db_game.title}' deleted successfully"}
 
 @app.get("/debug")
 async def debug_routes():
