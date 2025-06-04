@@ -1,38 +1,683 @@
-.App {
-  text-align: center;
+/* =============================================================================
+   HUSBAND'S GAMES DATABASE - COMPLETE STYLESHEET
+   =============================================================================
+   This CSS file provides all styling for the games database application.
+   
+   ORGANIZATION:
+   1. Base Layout & Typography
+   2. Header & Navigation Styles
+   3. Controls & Button Styles
+   4. Loading & Error States
+   5. Main Table Styles
+   6. Interactive Elements (Sorting, Hover Effects)
+   7. Admin Actions (Delete buttons, etc.)
+   8. Responsive Design (Mobile/Tablet)
+   9. Print Styles
+   10. Utility Classes
+   
+   DESIGN PRINCIPLES:
+   - Clean, professional appearance suitable for data management
+   - Responsive design that works on all screen sizes
+   - Accessible color contrasts and interactive elements
+   - Consistent spacing and typography throughout
+   - Smooth transitions for better user experience
+   ============================================================================= */
+
+/* =============================================================================
+   1. BASE LAYOUT & TYPOGRAPHY
+   ============================================================================= */
+
+/* Main container that wraps the entire application */
+.container {
+  max-width: 100%;
+  /* Take full width available */
+  margin: 0 auto;
+  /* Center the container horizontally */
+  padding: 20px;
+  /* Add breathing room around content */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  /* Use system fonts for better performance and native feel */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+/* =============================================================================
+   2. HEADER & NAVIGATION STYLES
+   ============================================================================= */
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Header section containing the title and admin controls */
+.header {
   display: flex;
-  flex-direction: column;
+  /* Use flexbox for horizontal layout */
+  justify-content: space-between;
+  /* Push title left, controls right */
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  /* Vertically center all items */
+  margin-bottom: 20px;
+  /* Space below header before main content */
+  flex-wrap: wrap;
+  /* Allow items to wrap on small screens */
+  gap: 10px;
+  /* Space between wrapped items */
+}
+
+/* Main application title */
+.header h1 {
+  margin: 0;
+  /* Remove default margin from h1 */
+  color: #333;
+  /* Dark gray for good readability */
+  font-size: 2em;
+  /* Large, prominent title */
+}
+
+/* Container for header information and stats */
+.header-info {
+  display: flex;
+  /* Horizontal layout for info items */
+  align-items: center;
+  /* Vertically center items */
+  gap: 15px;
+  /* Space between each info item */
+}
+
+/* =============================================================================
+   3. CONTROLS & BUTTON STYLES
+   ============================================================================= */
+
+/* Statistics display (game count, column count) */
+.games-count,
+.columns-count {
+  font-weight: 500;
+  /* Medium font weight for emphasis */
+  color: #666;
+  /* Subtle gray color */
+  font-size: 1.1em;
+  /* Slightly larger than body text */
+}
+
+/* Primary export button */
+.export-btn {
+  background: #007bff;
+  /* Bootstrap-style blue background */
   color: white;
+  /* White text for contrast */
+  border: none;
+  /* Remove default button border */
+  padding: 10px 20px;
+  /* Comfortable padding for clicking */
+  border-radius: 6px;
+  /* Rounded corners for modern look */
+  cursor: pointer;
+  /* Show pointer cursor on hover */
+  font-size: 14px;
+  /* Readable font size */
+  font-weight: 500;
+  /* Medium weight for button text */
+  transition: background-color 0.2s;
+  /* Smooth color change on hover */
+  display: flex;
+  /* Flexbox for icon + text layout */
+  align-items: center;
+  /* Center icon and text vertically */
+  gap: 8px;
+  /* Space between icon and text */
 }
 
-.App-link {
-  color: #61dafb;
+/* Export button hover effect */
+.export-btn:hover {
+  background: #0056b3;
+  /* Darker blue when hovering */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* =============================================================================
+   4. LOADING & ERROR STATES
+   ============================================================================= */
+
+/* Common styles for loading and error messages */
+.loading,
+.error {
+  text-align: center;
+  /* Center the text */
+  padding: 40px;
+  /* Large padding for visual prominence */
+  font-size: 1.2em;
+  /* Larger text for better visibility */
+}
+
+/* Error message specific styling */
+.error {
+  color: #dc3545;
+  /* Bootstrap-style red text */
+  background: #f8d7da;
+  /* Light red background */
+  border: 1px solid #f5c6cb;
+  /* Slightly darker red border */
+  border-radius: 6px;
+  /* Rounded corners */
+}
+
+/* Loading message styling */
+.loading {
+  color: #666;
+  /* Subtle gray text */
+}
+
+/* =============================================================================
+   5. MAIN TABLE STYLES
+   ============================================================================= */
+
+/* Container that wraps the table for scrolling and styling */
+.table-container {
+  overflow: auto;
+  /* Enable scrolling when content is too wide/tall */
+  border: 1px solid #ddd;
+  /* Light gray border around table */
+  border-radius: 8px;
+  /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for depth */
+  background: white;
+  /* White background */
+  max-height: 70vh;
+  /* Limit height to 70% of viewport height */
+  /* This ensures the table doesn't take up the entire screen */
+}
+
+/* The main games table element */
+.games-table {
+  width: 100%;
+  /* Take full width of container */
+  border-collapse: collapse;
+  /* Remove gaps between table cells */
+  min-width: 1200px;
+  /* Ensure minimum width for all columns */
+  /* This prevents columns from being too cramped */
+}
+
+/* Table header cells */
+.games-table th {
+  background: #f8f9fa;
+  /* Light gray background for headers */
+  border: 1px solid #dee2e6;
+  /* Border around each header cell */
+  padding: 12px 8px;
+  /* Comfortable padding for header text */
+  text-align: left;
+  /* Left-align header text */
+  font-weight: 600;
+  /* Bold font weight for headers */
+  color: #495057;
+  /* Dark gray text color */
+  position: sticky;
+  /* Make headers stick to top when scrolling */
+  top: 0;
+  /* Stick to the very top */
+  z-index: 10;
+  /* Ensure headers appear above table content */
+}
+
+/* Table data cells */
+.games-table td {
+  border: 1px solid #dee2e6;
+  /* Border around each data cell */
+  padding: 8px 12px;
+  /* Padding for cell content */
+  vertical-align: top;
+  /* Align content to top of cell */
+  min-width: 100px;
+  /* Minimum width for each column */
+  max-width: 250px;
+  /* Maximum width to prevent super wide columns */
+  word-wrap: break-word;
+  /* Break long words to fit in cell */
+  white-space: nowrap;
+  /* Don't wrap text to new lines */
+  overflow: hidden;
+  /* Hide text that doesn't fit */
+  text-overflow: ellipsis;
+  /* Show "..." when text is cut off */
+}
+
+/* =============================================================================
+   6. INTERACTIVE ELEMENTS (SORTING, HOVER EFFECTS)
+   ============================================================================= */
+
+/* Sortable column headers */
+.sortable-header {
+  cursor: pointer;
+  /* Show pointer cursor to indicate clickability */
+  user-select: none;
+  /* Prevent text selection when clicking */
+  transition: background-color 0.2s;
+  /* Smooth background color change */
+}
+
+/* Hover effect for sortable headers */
+.sortable-header:hover {
+  background: #e9ecef !important;
+  /* Light gray background on hover */
+  /* !important ensures this overrides other background colors */
+}
+
+/* Container for header content (text + sort icon) */
+.header-content {
+  display: flex;
+  /* Horizontal layout */
+  justify-content: space-between;
+  /* Text on left, icon on right */
+  align-items: center;
+  /* Vertically center items */
+  gap: 8px;
+  /* Space between text and icon */
+}
+
+/* Header text styling */
+.header-text {
+  text-transform: capitalize;
+  /* Capitalize first letter of each word */
+  min-width: 0;
+  /* Allow text to shrink if needed */
+  flex: 1;
+  /* Take up available space */
+}
+
+/* Sort direction indicators (arrows) */
+.sort-icon {
+  font-size: 12px;
+  /* Small icon size */
+  opacity: 0.5;
+  /* Semi-transparent when not active */
+  transition: opacity 0.2s;
+  /* Smooth opacity change */
+}
+
+/* Active sort icon (currently sorted column) */
+.sort-icon.active {
+  opacity: 1;
+  /* Fully opaque when active */
+  color: #007bff;
+  /* Blue color to match primary theme */
+}
+
+/* Sort icon on header hover */
+.sortable-header:hover .sort-icon {
+  opacity: 0.8;
+  /* More visible on hover */
+}
+
+/* =============================================================================
+   7. TABLE ROW STYLING & VISUAL ENHANCEMENTS
+   ============================================================================= */
+
+/* Alternating row colors for better readability */
+.games-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+  /* Light gray for even rows */
+}
+
+/* Row hover effect */
+.games-table tbody tr:hover {
+  background-color: #e3f2fd;
+  /* Light blue when hovering over row */
+}
+
+/* =============================================================================
+   8. STICKY COLUMN FUNCTIONALITY
+   ============================================================================= */
+
+/* Make first column (usually title) stick to left when scrolling horizontally */
+.games-table td:first-child,
+.games-table th:first-child {
+  position: sticky;
+  /* Stick to left side */
+  left: 0;
+  /* Position at left edge */
+  background: white;
+  /* White background to cover content behind */
+  z-index: 5;
+  /* Appear above other content */
+}
+
+/* Maintain alternating colors for sticky first column */
+.games-table tbody tr:nth-child(even) td:first-child {
+  background: #f8f9fa;
+  /* Match even row color */
+}
+
+/* Maintain hover effect for sticky first column */
+.games-table tbody tr:hover td:first-child {
+  background: #e3f2fd;
+  /* Match row hover color */
+}
+
+/* Sticky first column header */
+.games-table th:first-child {
+  background: #f8f9fa;
+  /* Header background color */
+  z-index: 11;
+  /* Higher z-index than data cells */
+}
+
+/* =============================================================================
+   9. COLUMN-SPECIFIC WIDTH OPTIMIZATION
+   ============================================================================= */
+
+/* Title column - wider to accommodate game names */
+.games-table th:nth-child(1),
+.games-table td:nth-child(1) {
+  min-width: 150px;
+  /* Wider minimum for game titles */
+  max-width: 250px;
+  /* Allow more space for long titles */
+  white-space: normal;
+  /* Allow title text to wrap */
+}
+
+/* Release year column - narrow since years are short */
+.games-table th:nth-child(2),
+.games-table td:nth-child(2) {
+  min-width: 80px;
+  /* Narrow for 4-digit years */
+  max-width: 100px;
+}
+
+/* ID column - very narrow since IDs are short numbers */
+.games-table th:nth-child(3),
+.games-table td:nth-child(3) {
+  min-width: 50px;
+  /* Very narrow for ID numbers */
+  max-width: 80px;
+}
+
+/* Platform column - medium width for platform names */
+.games-table th:nth-child(4),
+.games-table td:nth-child(4) {
+  min-width: 100px;
+  /* Room for "PlayStation 5", "Nintendo Switch" */
+  max-width: 150px;
+}
+
+/* Genre column - medium width for genre names */
+.games-table th:nth-child(5),
+.games-table td:nth-child(5) {
+  min-width: 100px;
+  /* Room for "Action-Adventure", "Role-Playing" */
+  max-width: 150px;
+}
+
+/* Opened column - narrow for boolean values */
+.games-table th:nth-child(6),
+.games-table td:nth-child(6) {
+  min-width: 80px;
+  /* Just enough for "True"/"False" */
+  max-width: 100px;
+}
+
+/* Price column - narrow for monetary values */
+.games-table th:nth-child(7),
+.games-table td:nth-child(7) {
+  min-width: 80px;
+  /* Enough for "$59.99" */
+  max-width: 100px;
+}
+
+/* Region column - narrow for region codes */
+.games-table th:nth-child(8),
+.games-table td:nth-child(8) {
+  min-width: 80px;
+  /* Enough for "US", "EU", "Japan" */
+  max-width: 100px;
+}
+
+/* Publisher column - wider for company names */
+.games-table th:nth-child(9),
+.games-table td:nth-child(9) {
+  min-width: 120px;
+  /* Room for "Electronic Arts", "Activision Blizzard" */
+  max-width: 200px;
+}
+
+/* Created date column - medium width for timestamps */
+.games-table th:nth-child(10),
+.games-table td:nth-child(10) {
+  min-width: 120px;
+  /* Room for formatted dates */
+  max-width: 150px;
+}
+
+/* =============================================================================
+   10. ADMIN ACTIONS COLUMN (DELETE BUTTONS)
+   ============================================================================= */
+
+/* Header for the actions column */
+.actions-header {
+  background: #f8f9fa !important;
+  /* Match other headers */
+  border: 1px solid #dee2e6;
+  /* Match other borders */
+  padding: 12px 8px;
+  /* Match other header padding */
+  text-align: center;
+  /* Center the "Actions" text */
+  font-weight: 600;
+  /* Bold like other headers */
+  color: #495057;
+  /* Match other header text color */
+  position: sticky;
+  /* Stick to top when scrolling */
+  top: 0;
+  /* Position at top */
+  z-index: 10;
+  /* Above table content */
+  width: 80px;
+  /* Fixed width for action buttons */
+  min-width: 80px;
+  /* Don't shrink below 80px */
+  max-width: 80px;
+  /* Don't grow beyond 80px */
+}
+
+/* Data cells in the actions column */
+.actions-column {
+  text-align: center;
+  /* Center the action buttons */
+  width: 80px;
+  /* Match header width */
+  min-width: 80px;
+  /* Don't shrink */
+  max-width: 80px;
+  /* Don't grow */
+  vertical-align: middle;
+  /* Center buttons vertically in cell */
+}
+
+/* Delete button styling */
+.delete-btn {
+  background: none;
+  /* Transparent background initially */
+  border: none;
+  /* Remove button border */
+  cursor: pointer;
+  /* Show pointer cursor */
+  font-size: 16px;
+  /* Size for emoji icon */
+  padding: 4px 8px;
+  /* Small padding around icon */
+  border-radius: 4px;
+  /* Rounded corners */
+  transition: background-color 0.2s;
+  /* Smooth background change */
+}
+
+/* Delete button hover effect */
+.delete-btn:hover {
+  background: #f8d7da;
+  /* Light red background on hover */
+  transform: scale(1.1);
+  /* Slightly enlarge button */
+}
+
+/* Delete button active/click effect */
+.delete-btn:active {
+  transform: scale(0.95);
+  /* Slightly shrink when clicked */
+}
+
+/* Maintain alternating row colors in actions column */
+.games-table tbody tr:nth-child(even) .actions-column {
+  background: #f8f9fa;
+  /* Match even row background */
+}
+
+/* Maintain hover effect in actions column */
+.games-table tbody tr:hover .actions-column {
+  background: #e3f2fd;
+  /* Match row hover background */
+}
+
+/* =============================================================================
+   11. RESPONSIVE DESIGN - MOBILE & TABLET ADAPTATIONS
+   ============================================================================= */
+
+/* Styles for tablets and small laptops */
+@media (max-width: 768px) {
+
+  /* Reduce container padding on smaller screens */
+  .container {
+    padding: 10px;
+    /* Less padding for more content space */
   }
-  to {
-    transform: rotate(360deg);
+
+  /* Stack header items vertically on small screens */
+  .header {
+    flex-direction: column;
+    /* Stack title above controls */
+    align-items: stretch;
+    /* Stretch items to full width */
+  }
+
+  /* Spread header info across available width */
+  .header-info {
+    justify-content: space-between;
+    /* Spread items apart */
+  }
+
+  /* Reduce table cell padding for more content space */
+  .games-table th,
+  .games-table td {
+    padding: 6px 4px;
+    /* Smaller padding */
+    font-size: 14px;
+    /* Smaller font size */
+  }
+
+  /* Smaller header text on mobile */
+  .header-text {
+    font-size: 13px;
+    /* Reduce header font size */
   }
 }
+
+/* =============================================================================
+   12. PRINT STYLES - FOR PRINTING THE TABLE
+   ============================================================================= */
+
+/* Styles that apply when printing the page */
+@media print {
+
+  /* Hide interactive elements when printing */
+  .export-btn {
+    display: none;
+    /* Don't show export button in printout */
+  }
+
+  /* Remove scroll container styling for print */
+  .table-container {
+    overflow: visible;
+    /* Show all content when printing */
+    border: none;
+    /* Remove border for clean print */
+    box-shadow: none;
+    /* Remove shadow for clean print */
+  }
+
+  /* Ensure table borders are visible when printed */
+  .games-table th,
+  .games-table td {
+    border: 1px solid #000;
+    /* Black borders for better print visibility */
+    padding: 4px;
+    /* Minimal padding to save space */
+  }
+}
+
+/* Fix for oversized Region header covering other columns */
+.games-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  /* Forces equal column distribution */
+  min-width: 1200px;
+}
+
+/* Reset all column headers to equal width distribution */
+.games-table th {
+  width: calc(100% / 11);
+  /* 10 data columns + 1 actions column = 11 total */
+  max-width: none;
+  min-width: none;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 12px 8px;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Reset all data cells to match header widths */
+.games-table td {
+  width: calc(100% / 11);
+  max-width: none;
+  min-width: none;
+  border: 1px solid #dee2e6;
+  padding: 8px 12px;
+  vertical-align: top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Make title column slightly wider since game names can be long */
+.games-table th:nth-child(1),
+.games-table td:nth-child(1) {
+  width: calc(100% / 8);
+  /* Give title column more space */
+  white-space: normal;
+  /* Allow title text to wrap */
+}
+
+/* Make ID column narrower since IDs are short */
+.games-table th:nth-child(3),
+.games-table td:nth-child(3) {
+  width: calc(100% / 20);
+  /* Make ID column very narrow */
+}
+
+/* =============================================================================
+   13. ADDITIONAL UI COMPONENTS & STATES
+   ============================================================================= */
+
+/* These styles support various UI components like modals, buttons, and states
+   that are referenced in the main App.js file but defined elsewhere in the
+   complete stylesheet. The main table and layout styles above are the core
+   styles that make the spreadsheet interface functional and visually appealing. */
+
+/* Note: Additional styles for modals, login forms, and other components
+   would typically be included here or in separate CSS modules for larger
+   applications. The styles above focus on the main table interface which
+   is the core feature of this games database application. */
