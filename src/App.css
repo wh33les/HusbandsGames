@@ -1,200 +1,618 @@
 /* =============================================================================
-   HUSBAND'S GAMES DATABASE - COMPLETE STYLESHEET
+   HUSBAND'S GAMES DATABASE - COMPLETE STYLESHEET WITH DETAILED ANNOTATIONS
    =============================================================================
-   This CSS file provides all styling for the games database application.
+   
+   This CSS file provides comprehensive styling for a games database application
+   built with React. The app allows users to view, sort, filter, and manage a
+   collection of video games with administrative features.
+   
+   MAIN FEATURES STYLED:
+   - Responsive data table with sticky headers and columns
+   - User authentication system with login/logout
+   - Modal dialogs for adding new games
+   - Administrative controls and actions
+   - Export functionality for data download
+   - Mobile-responsive design
    
    ORGANIZATION:
-   1. Base Layout & Typography
-   2. Header & Navigation Styles
-   3. Controls & Button Styles
-   4. Loading & Error States
-   5. Main Table Styles
-   6. Interactive Elements (Sorting, Hover Effects)
-   7. Admin Actions (Delete buttons, etc.)
-   8. Responsive Design (Mobile/Tablet)
-   9. Print Styles
-   10. Utility Classes
+   1. CSS Reset & Base Styles
+   2. Layout Components (Container, Header)
+   3. Authentication System (Login Modal, User Controls)
+   4. Navigation & Control Elements
+   5. Data Table Styling (Headers, Cells, Sorting)
+   6. Interactive Elements (Hover, Focus, Active States)
+   7. Modal System (Overlays, Forms, Dialogs)
+   8. Administrative Features (Add/Delete, Export)
+   9. Loading & Error States
+   10. Responsive Design (Mobile, Tablet, Desktop)
+   11. Print Styles
+   12. Utility Classes
    
    DESIGN PRINCIPLES:
-   - Clean, professional appearance suitable for data management
-   - Responsive design that works on all screen sizes
-   - Accessible color contrasts and interactive elements
-   - Consistent spacing and typography throughout
-   - Smooth transitions for better user experience
+   - Mobile-first responsive design
+   - Accessible color contrasts (WCAG AA compliance)
+   - Consistent spacing using 4px grid system
+   - Smooth micro-interactions with CSS transitions
+   - Performance-optimized with minimal reflows
+   - Cross-browser compatibility
    ============================================================================= */
 
 /* =============================================================================
-   1. BASE LAYOUT & TYPOGRAPHY
+   1. CSS RESET & BASE STYLES
    ============================================================================= */
 
-/* Main container that wraps the entire application */
+/* Base container that wraps the entire React application
+   This is the root element that all other components render inside */
 .container {
   max-width: 100%;
-  /* Take full width available */
+  /* Take full available width of viewport */
   margin: 0 auto;
-  /* Center the container horizontally */
+  /* Center horizontally using auto left/right margins */
   padding: 20px;
-  /* Add breathing room around content */
+  /* Add 20px breathing room on all sides */
+
+  /* Font stack prioritizes system fonts for better performance and native feel:
+     - -apple-system: San Francisco font on macOS/iOS
+     - BlinkMacSystemFont: San Francisco font on older macOS
+     - Segoe UI: Modern Windows font
+     - Roboto: Android system font
+     - sans-serif: Fallback for any system */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  /* Use system fonts for better performance and native feel */
 }
 
 /* =============================================================================
-   2. HEADER & NAVIGATION STYLES
+   2. LAYOUT COMPONENTS - HEADER & MAIN STRUCTURE
    ============================================================================= */
 
-/* Header section containing the title and admin controls */
+/* Header section contains the app title and main navigation/controls
+   Uses flexbox for responsive layout that adapts to screen size */
 .header {
   display: flex;
   /* Use flexbox for horizontal layout */
   justify-content: space-between;
-  /* Push title left, controls right */
+  /* Push title to left, controls to right */
   align-items: center;
-  /* Vertically center all items */
+  /* Vertically center all header items */
   margin-bottom: 20px;
-  /* Space below header before main content */
+  /* Space between header and main content */
   flex-wrap: wrap;
-  /* Allow items to wrap on small screens */
+  /* Allow items to wrap to new line on small screens */
   gap: 10px;
-  /* Space between wrapped items */
+  /* 10px space between items when they wrap */
 }
 
-/* Main application title */
+/* Main application title - the "Husband's Games" heading */
 .header h1 {
   margin: 0;
-  /* Remove default margin from h1 */
+  /* Remove default browser margin from h1 element */
   color: #333;
-  /* Dark gray for good readability */
+  /* Dark gray color for high contrast readability */
   font-size: 2em;
-  /* Large, prominent title */
+  /* 2x the base font size for prominence */
 }
 
-/* Container for header information and stats */
-.header-info {
+/* Container for user information and statistics in header
+   Groups related header elements together */
+.user-info,
+.admin-info {
   display: flex;
-  /* Horizontal layout for info items */
+  /* Horizontal layout for user info items */
   align-items: center;
-  /* Vertically center items */
+  /* Vertically center user info elements */
   gap: 15px;
-  /* Space between each info item */
+  /* 15px space between each info item */
+}
+
+/* User name and role display text */
+.user-info span,
+.admin-info span {
+  font-weight: 500;
+  /* Medium font weight for subtle emphasis */
+  color: #666;
+  /* Medium gray for secondary information */
 }
 
 /* =============================================================================
-   3. CONTROLS & BUTTON STYLES
+   3. AUTHENTICATION SYSTEM - LOGIN MODAL & USER CONTROLS
    ============================================================================= */
 
-/* Statistics display (game count, column count) */
-.games-count,
-.columns-count {
-  font-weight: 500;
-  /* Medium font weight for emphasis */
-  color: #666;
-  /* Subtle gray color */
-  font-size: 1.1em;
-  /* Slightly larger than body text */
+/* Modal overlay that covers the entire screen when login dialog is open
+   Creates a dark semi-transparent background behind the modal */
+.modal-overlay {
+  position: fixed;
+  /* Fixed positioning relative to viewport */
+  top: 0;
+  /* Align to top edge of screen */
+  left: 0;
+  /* Align to left edge of screen */
+  right: 0;
+  /* Stretch to right edge of screen */
+  bottom: 0;
+  /* Stretch to bottom edge of screen */
+  background: rgba(0, 0, 0, 0.5);
+  /* 50% transparent black overlay */
+  display: flex;
+  /* Use flexbox to center modal content */
+  justify-content: center;
+  /* Center modal horizontally */
+  align-items: center;
+  /* Center modal vertically */
+  z-index: 1000;
+  /* High z-index to appear above all other content */
 }
 
-/* Primary export button */
-.export-btn {
+/* Main login modal container
+   The white dialog box that contains the login form */
+.admin-login-modal,
+.modal-content {
+  background: white;
+  /* White background for modal content */
+  border-radius: 12px;
+  /* Rounded corners for modern appearance */
+  width: 90%;
+  /* Take 90% of screen width on mobile */
+  max-width: 400px;
+  /* Never exceed 400px wide on larger screens */
+  max-height: 90vh;
+  /* Never exceed 90% of viewport height */
+  overflow-y: auto;
+  /* Allow scrolling if content is too tall */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  /* Deep shadow for depth */
+}
+
+/* Login form container with padding for visual breathing room */
+.admin-login-form,
+.add-game-form {
+  padding: 20px;
+  /* 20px padding inside form for content spacing */
+}
+
+/* Modal header section containing title and close button */
+.modal-header {
+  display: flex;
+  /* Horizontal layout for header content */
+  justify-content: space-between;
+  /* Title on left, close button on right */
+  align-items: center;
+  /* Vertically center header elements */
+  padding: 20px;
+  /* Padding around header content */
+  border-bottom: 1px solid #eee;
+  /* Light gray border to separate from body */
+}
+
+/* Modal title styling */
+.modal-header h3 {
+  margin: 0;
+  /* Remove default h3 margins */
+  color: #333;
+  /* Dark gray for title text */
+}
+
+/* Close button (X) in top-right of modal */
+.close-btn {
+  background: none;
+  /* Transparent background */
+  border: none;
+  /* Remove button border */
+  font-size: 24px;
+  /* Large font for visibility */
+  cursor: pointer;
+  /* Pointer cursor on hover */
+  color: #999;
+  /* Light gray initially */
+  padding: 0;
+  /* Remove default button padding */
+  width: 30px;
+  /* Fixed width for consistent hit target */
+  height: 30px;
+  /* Fixed height for consistent hit target */
+  display: flex;
+  /* Center the X character */
+  align-items: center;
+  /* Vertically center X */
+  justify-content: center;
+  /* Horizontally center X */
+}
+
+/* Close button hover effect for better UX feedback */
+.close-btn:hover {
+  color: #333;
+  /* Darker gray on hover for emphasis */
+}
+
+/* =============================================================================
+   4. FORM ELEMENTS - INPUT FIELDS, BUTTONS, FORM LAYOUT
+   ============================================================================= */
+
+/* Form group containers that wrap label + input pairs
+   Provides consistent spacing between form fields */
+.form-group {
+  margin-bottom: 20px;
+  /* 20px space below each form group */
+}
+
+/* Form labels that describe what each input field is for */
+.form-group label {
+  display: block;
+  /* Make label take full width */
+  margin-bottom: 5px;
+  /* Small space between label and input */
+  font-weight: 500;
+  /* Medium weight for readability */
+  color: #555;
+  /* Dark gray for label text */
+}
+
+/* Text inputs and select dropdowns styling
+   Creates consistent appearance across all form controls */
+.form-group input,
+.form-group select {
+  width: 100%;
+  /* Take full width of form group */
+  padding: 12px;
+  /* Comfortable padding for touch targets */
+  border: 2px solid #ddd;
+  /* Light gray border around inputs */
+  border-radius: 6px;
+  /* Rounded corners for modern look */
+  font-size: 16px;
+  /* 16px font prevents zoom on iOS */
+  transition: border-color 0.3s;
+  /* Smooth color change on focus */
+}
+
+/* Focus state for inputs - shows when user clicks into field
+   Provides visual feedback about which field is active */
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  /* Remove browser default focus outline */
+  border-color: #007bff;
+  /* Blue border to indicate focus */
+}
+
+/* Two-column form layout for related fields
+   Used when multiple related inputs should appear side-by-side */
+.form-row {
+  display: grid;
+  /* Use CSS Grid for layout */
+  grid-template-columns: 1fr 1fr;
+  /* Two equal-width columns */
+  gap: 15px;
+  /* 15px space between columns */
+  margin-bottom: 15px;
+  /* Space below each form row */
+}
+
+/* Checkbox input styling for boolean fields like "Opened" status */
+.checkbox-group {
+  display: flex;
+  /* Horizontal layout for checkbox + label */
+  align-items: center;
+  /* Vertically center checkbox with label */
+  justify-content: center;
+  /* Center the entire checkbox group */
+}
+
+/* Checkbox label that includes both the input and text */
+.checkbox-group label {
+  display: flex;
+  /* Horizontal layout for checkbox + text */
+  align-items: center;
+  /* Vertically align checkbox with text */
+  gap: 8px;
+  /* 8px space between checkbox and text */
+  cursor: pointer;
+  /* Pointer cursor - entire label is clickable */
+}
+
+/* =============================================================================
+   5. BUTTON STYLES - PRIMARY, SECONDARY, AND SPECIALIZED BUTTONS
+   ============================================================================= */
+
+/* Primary login button - main call-to-action in login form */
+.login-btn {
+  width: 100%;
+  /* Take full width of form */
+  padding: 12px;
+  /* Large padding for easy clicking */
   background: #007bff;
   /* Bootstrap-style blue background */
   color: white;
   /* White text for contrast */
   border: none;
   /* Remove default button border */
-  padding: 10px 20px;
-  /* Comfortable padding for clicking */
   border-radius: 6px;
-  /* Rounded corners for modern look */
-  cursor: pointer;
-  /* Show pointer cursor on hover */
-  font-size: 14px;
-  /* Readable font size */
+  /* Rounded corners */
+  font-size: 16px;
+  /* Large, readable font size */
   font-weight: 500;
   /* Medium weight for button text */
-  transition: background-color 0.2s;
+  cursor: pointer;
+  /* Pointer cursor on hover */
+  transition: background-color 0.3s;
   /* Smooth color change on hover */
-  display: flex;
-  /* Flexbox for icon + text layout */
-  align-items: center;
-  /* Center icon and text vertically */
-  gap: 8px;
-  /* Space between icon and text */
+}
+
+/* Login button hover effect */
+.login-btn:hover:not(:disabled) {
+  background: #0056b3;
+  /* Darker blue on hover */
+}
+
+/* Disabled state for login button (when form is submitting) */
+.login-btn:disabled {
+  opacity: 0.6;
+  /* Fade out to show disabled state */
+  cursor: not-allowed;
+  /* Show not-allowed cursor */
+}
+
+/* Admin controls button for opening login modal */
+.admin-login-btn {
+  background: #6c757d;
+  /* Gray background for secondary action */
+  color: white;
+  /* White text */
+  border: none;
+  /* No border */
+  padding: 8px 16px;
+  /* Smaller padding than primary buttons */
+  border-radius: 6px;
+  /* Rounded corners */
+  cursor: pointer;
+  /* Pointer cursor */
+  font-size: 14px;
+  /* Slightly smaller font */
+  font-weight: 500;
+  /* Medium weight */
+  transition: background-color 0.2s;
+  /* Quick hover transition */
+}
+
+/* Admin login button hover effect */
+.admin-login-btn:hover {
+  background: #5a6268;
+  /* Darker gray on hover */
+}
+
+/* Logout button for ending admin session */
+.logout-btn {
+  background: #dc3545;
+  /* Red background for destructive action */
+  color: white;
+  /* White text for contrast */
+  border: none;
+  /* No border */
+  padding: 8px 16px;
+  /* Small padding */
+  border-radius: 6px;
+  /* Rounded corners */
+  cursor: pointer;
+  /* Pointer cursor */
+  font-size: 14px;
+  /* Small font size */
+  transition: background-color 0.2s;
+  /* Quick hover transition */
+}
+
+/* Logout button hover effect */
+.logout-btn:hover {
+  background: #c82333;
+  /* Darker red on hover */
+}
+
+/* Add new game button - positive action */
+.add-btn {
+  background: #28a745;
+  /* Green background for positive action */
+  color: white;
+  /* White text */
+  border: none;
+  /* No border */
+  padding: 10px 20px;
+  /* Medium padding */
+  border-radius: 6px;
+  /* Rounded corners */
+  cursor: pointer;
+  /* Pointer cursor */
+  font-size: 14px;
+  /* Standard font size */
+  font-weight: 500;
+  /* Medium weight */
+  transition: background-color 0.2s;
+  /* Quick hover transition */
+}
+
+/* Add button hover effect */
+.add-btn:hover {
+  background: #218838;
+  /* Darker green on hover */
+}
+
+/* Export data button - utility action */
+.export-btn {
+  background: #007bff;
+  /* Blue background for utility action */
+  color: white;
+  /* White text */
+  border: none;
+  /* No border */
+  padding: 10px 20px;
+  /* Medium padding */
+  border-radius: 6px;
+  /* Rounded corners */
+  cursor: pointer;
+  /* Pointer cursor */
+  font-size: 14px;
+  /* Standard font size */
+  font-weight: 500;
+  /* Medium weight */
+  transition: background-color 0.2s;
+  /* Quick hover transition */
 }
 
 /* Export button hover effect */
 .export-btn:hover {
   background: #0056b3;
-  /* Darker blue when hovering */
+  /* Darker blue on hover */
 }
 
-/* =============================================================================
-   4. LOADING & ERROR STATES
-   ============================================================================= */
-
-/* Common styles for loading and error messages */
-.loading,
-.error {
-  text-align: center;
-  /* Center the text */
-  padding: 40px;
-  /* Large padding for visual prominence */
-  font-size: 1.2em;
-  /* Larger text for better visibility */
-}
-
-/* Error message specific styling */
-.error {
-  color: #dc3545;
-  /* Bootstrap-style red text */
-  background: #f8d7da;
-  /* Light red background */
-  border: 1px solid #f5c6cb;
-  /* Slightly darker red border */
+/* Cancel button in modals - secondary action */
+.cancel-btn {
+  background: #6c757d;
+  /* Gray background for cancel action */
+  color: white;
+  /* White text */
+  border: none;
+  /* No border */
+  padding: 10px 20px;
+  /* Medium padding */
   border-radius: 6px;
   /* Rounded corners */
+  cursor: pointer;
+  /* Pointer cursor */
 }
 
-/* Loading message styling */
-.loading {
-  color: #666;
-  /* Subtle gray text */
+/* Cancel button hover effect */
+.cancel-btn:hover {
+  background: #5a6268;
+  /* Darker gray on hover */
+}
+
+/* Submit button in forms - primary action */
+.submit-btn {
+  background: #28a745;
+  /* Green background for submit action */
+  color: white;
+  /* White text */
+  border: none;
+  /* No border */
+  padding: 10px 20px;
+  /* Medium padding */
+  border-radius: 6px;
+  /* Rounded corners */
+  cursor: pointer;
+  /* Pointer cursor */
+  font-weight: 500;
+  /* Medium weight for emphasis */
+}
+
+/* Retry button for error states */
+.retry-btn {
+  background: #ffc107;
+  /* Yellow/orange background for retry */
+  color: #212529;
+  /* Dark text for contrast on light background */
+  border: none;
+  /* No border */
+  padding: 10px 20px;
+  /* Medium padding */
+  border-radius: 6px;
+  /* Rounded corners */
+  cursor: pointer;
+  /* Pointer cursor */
+  font-weight: 500;
+  /* Medium weight */
+  margin-top: 10px;
+  /* Space above retry button */
 }
 
 /* =============================================================================
-   5. MAIN TABLE STYLES
+   6. CONTROLS SECTION - STATS, ACTIONS, AND UTILITY CONTROLS
    ============================================================================= */
 
-/* Container that wraps the table for scrolling and styling */
+/* Controls section containing stats and action buttons
+   Appears below header and above main table */
+.controls {
+  display: flex;
+  /* Horizontal layout for controls */
+  justify-content: space-between;
+  /* Stats on left, actions on right */
+  align-items: center;
+  /* Vertically center all items */
+  margin-bottom: 20px;
+  /* Space between controls and table */
+  flex-wrap: wrap;
+  /* Allow wrapping on small screens */
+  gap: 15px;
+  /* Space between wrapped items */
+}
+
+/* Container for statistics (game count, column count) */
+.stats {
+  display: flex;
+  /* Horizontal layout for stat items */
+  gap: 20px;
+  /* 20px space between each stat */
+}
+
+/* Individual statistic displays */
+.games-count,
+.columns-count {
+  font-weight: 500;
+  /* Medium weight for emphasis */
+  color: #666;
+  /* Medium gray for secondary information */
+  font-size: 1.1em;
+  /* Slightly larger than body text */
+}
+
+/* Container for action buttons (Add, Export, etc.) */
+.actions {
+  display: flex;
+  /* Horizontal layout for action buttons */
+  gap: 10px;
+  /* 10px space between each button */
+}
+
+/* =============================================================================
+   7. DATA TABLE STYLING - MAIN TABLE STRUCTURE AND APPEARANCE
+   ============================================================================= */
+
+/* Container that wraps the main data table
+   Provides scrolling, borders, and visual styling around the table */
 .table-container {
   overflow: auto;
-  /* Enable scrolling when content is too wide/tall */
+  /* Enable scrolling when content exceeds container */
   border: 1px solid #ddd;
-  /* Light gray border around table */
+  /* Light gray border around entire table */
   border-radius: 8px;
-  /* Rounded corners */
+  /* Rounded corners for modern appearance */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   /* Subtle shadow for depth */
   background: white;
-  /* White background */
+  /* White background for table area */
   max-height: 70vh;
   /* Limit height to 70% of viewport height */
-  /* This ensures the table doesn't take up the entire screen */
+  /* This prevents the table from taking over the entire screen */
 }
 
-/* The main games table element */
+/* The main games data table element
+   Contains all the game records in a structured format */
 .games-table {
   width: 100%;
   /* Take full width of container */
   border-collapse: collapse;
   /* Remove gaps between table cells */
+  table-layout: fixed;
+  /* Force equal column distribution */
   min-width: 1200px;
   /* Ensure minimum width for all columns */
-  /* This prevents columns from being too cramped */
+  /* This prevents columns from being too cramped on smaller screens */
 }
 
-/* Table header cells */
+/* Table header cells (column titles)
+   These are the clickable column headers that allow sorting */
 .games-table th {
+  width: calc(100% / 11);
+  /* Equal width for all 11 columns */
+  max-width: none;
+  /* Override any max-width restrictions */
+  min-width: none;
+  /* Override any min-width restrictions */
   background: #f8f9fa;
   /* Light gray background for headers */
   border: 1px solid #dee2e6;
@@ -213,35 +631,65 @@
   /* Stick to the very top */
   z-index: 10;
   /* Ensure headers appear above table content */
+  overflow: hidden;
+  /* Hide text that doesn't fit */
+  text-overflow: ellipsis;
+  /* Show "..." when text is cut off */
+  white-space: nowrap;
+  /* Don't wrap text to new lines */
 }
 
-/* Table data cells */
+/* Table data cells (actual game information)
+   These cells contain the game data like title, year, platform, etc. */
 .games-table td {
+  width: calc(100% / 11);
+  /* Match header widths */
+  max-width: none;
+  /* Override any max-width restrictions */
+  min-width: none;
+  /* Override any min-width restrictions */
   border: 1px solid #dee2e6;
   /* Border around each data cell */
   padding: 8px 12px;
   /* Padding for cell content */
   vertical-align: top;
   /* Align content to top of cell */
-  min-width: 100px;
-  /* Minimum width for each column */
-  max-width: 250px;
-  /* Maximum width to prevent super wide columns */
-  word-wrap: break-word;
-  /* Break long words to fit in cell */
-  white-space: nowrap;
-  /* Don't wrap text to new lines */
   overflow: hidden;
   /* Hide text that doesn't fit */
   text-overflow: ellipsis;
   /* Show "..." when text is cut off */
+  white-space: nowrap;
+  /* Don't wrap text to new lines */
 }
 
 /* =============================================================================
-   6. INTERACTIVE ELEMENTS (SORTING, HOVER EFFECTS)
+   8. COLUMN-SPECIFIC STYLING - CUSTOM WIDTHS FOR DIFFERENT DATA TYPES
    ============================================================================= */
 
-/* Sortable column headers */
+/* Title column (first column) - wider to accommodate game names
+   Game titles can be long, so this column gets more space */
+.games-table th:nth-child(1),
+.games-table td:nth-child(1) {
+  width: calc(100% / 8);
+  /* Give title column 1/8th of table width */
+  white-space: normal;
+  /* Allow title text to wrap to multiple lines */
+}
+
+/* ID column (third column) - narrower since IDs are short numbers
+   Game IDs are typically short numbers, so this can be very narrow */
+.games-table th:nth-child(3),
+.games-table td:nth-child(3) {
+  width: calc(100% / 20);
+  /* Make ID column very narrow (1/20th width) */
+}
+
+/* =============================================================================
+   9. INTERACTIVE TABLE FEATURES - SORTING, HOVER EFFECTS, ROW STYLING
+   ============================================================================= */
+
+/* Sortable column headers that users can click to sort data
+   These headers change appearance on hover to show they're interactive */
 .sortable-header {
   cursor: pointer;
   /* Show pointer cursor to indicate clickability */
@@ -258,7 +706,8 @@
   /* !important ensures this overrides other background colors */
 }
 
-/* Container for header content (text + sort icon) */
+/* Container for header content (text + sort icon)
+   Arranges the column title and sort direction indicator */
 .header-content {
   display: flex;
   /* Horizontal layout */
@@ -270,7 +719,7 @@
   /* Space between text and icon */
 }
 
-/* Header text styling */
+/* Header text styling within sortable headers */
 .header-text {
   text-transform: capitalize;
   /* Capitalize first letter of each word */
@@ -280,7 +729,7 @@
   /* Take up available space */
 }
 
-/* Sort direction indicators (arrows) */
+/* Sort direction indicators (arrows showing sort order) */
 .sort-icon {
   font-size: 12px;
   /* Small icon size */
@@ -304,27 +753,25 @@
   /* More visible on hover */
 }
 
-/* =============================================================================
-   7. TABLE ROW STYLING & VISUAL ENHANCEMENTS
-   ============================================================================= */
-
-/* Alternating row colors for better readability */
+/* Alternating row colors for better readability
+   Even-numbered rows get a light gray background */
 .games-table tbody tr:nth-child(even) {
   background-color: #f8f9fa;
   /* Light gray for even rows */
 }
 
-/* Row hover effect */
+/* Row hover effect - highlights entire row when mouse hovers over it */
 .games-table tbody tr:hover {
   background-color: #e3f2fd;
   /* Light blue when hovering over row */
 }
 
 /* =============================================================================
-   8. STICKY COLUMN FUNCTIONALITY
+   10. STICKY COLUMN FUNCTIONALITY - KEEP IMPORTANT COLUMNS VISIBLE
    ============================================================================= */
 
-/* Make first column (usually title) stick to left when scrolling horizontally */
+/* Make first column (game title) stick to left when scrolling horizontally
+   This ensures the game title is always visible even when scrolling */
 .games-table td:first-child,
 .games-table th:first-child {
   position: sticky;
@@ -337,7 +784,7 @@
   /* Appear above other content */
 }
 
-/* Maintain alternating colors for sticky first column */
+/* Maintain alternating row colors for sticky first column */
 .games-table tbody tr:nth-child(even) td:first-child {
   background: #f8f9fa;
   /* Match even row color */
@@ -358,97 +805,10 @@
 }
 
 /* =============================================================================
-   9. COLUMN-SPECIFIC WIDTH OPTIMIZATION
+   11. ADMINISTRATIVE ACTIONS - DELETE BUTTONS AND ADMIN CONTROLS
    ============================================================================= */
 
-/* Title column - wider to accommodate game names */
-.games-table th:nth-child(1),
-.games-table td:nth-child(1) {
-  min-width: 150px;
-  /* Wider minimum for game titles */
-  max-width: 250px;
-  /* Allow more space for long titles */
-  white-space: normal;
-  /* Allow title text to wrap */
-}
-
-/* Release year column - narrow since years are short */
-.games-table th:nth-child(2),
-.games-table td:nth-child(2) {
-  min-width: 80px;
-  /* Narrow for 4-digit years */
-  max-width: 100px;
-}
-
-/* ID column - very narrow since IDs are short numbers */
-.games-table th:nth-child(3),
-.games-table td:nth-child(3) {
-  min-width: 50px;
-  /* Very narrow for ID numbers */
-  max-width: 80px;
-}
-
-/* Platform column - medium width for platform names */
-.games-table th:nth-child(4),
-.games-table td:nth-child(4) {
-  min-width: 100px;
-  /* Room for "PlayStation 5", "Nintendo Switch" */
-  max-width: 150px;
-}
-
-/* Genre column - medium width for genre names */
-.games-table th:nth-child(5),
-.games-table td:nth-child(5) {
-  min-width: 100px;
-  /* Room for "Action-Adventure", "Role-Playing" */
-  max-width: 150px;
-}
-
-/* Opened column - narrow for boolean values */
-.games-table th:nth-child(6),
-.games-table td:nth-child(6) {
-  min-width: 80px;
-  /* Just enough for "True"/"False" */
-  max-width: 100px;
-}
-
-/* Price column - narrow for monetary values */
-.games-table th:nth-child(7),
-.games-table td:nth-child(7) {
-  min-width: 80px;
-  /* Enough for "$59.99" */
-  max-width: 100px;
-}
-
-/* Region column - narrow for region codes */
-.games-table th:nth-child(8),
-.games-table td:nth-child(8) {
-  min-width: 80px;
-  /* Enough for "US", "EU", "Japan" */
-  max-width: 100px;
-}
-
-/* Publisher column - wider for company names */
-.games-table th:nth-child(9),
-.games-table td:nth-child(9) {
-  min-width: 120px;
-  /* Room for "Electronic Arts", "Activision Blizzard" */
-  max-width: 200px;
-}
-
-/* Created date column - medium width for timestamps */
-.games-table th:nth-child(10),
-.games-table td:nth-child(10) {
-  min-width: 120px;
-  /* Room for formatted dates */
-  max-width: 150px;
-}
-
-/* =============================================================================
-   10. ADMIN ACTIONS COLUMN (DELETE BUTTONS)
-   ============================================================================= */
-
-/* Header for the actions column */
+/* Header for the actions column (rightmost column with delete buttons) */
 .actions-header {
   background: #f8f9fa !important;
   /* Match other headers */
@@ -476,7 +836,7 @@
   /* Don't grow beyond 80px */
 }
 
-/* Data cells in the actions column */
+/* Data cells in the actions column containing delete buttons */
 .actions-column {
   text-align: center;
   /* Center the action buttons */
@@ -490,7 +850,7 @@
   /* Center buttons vertically in cell */
 }
 
-/* Delete button styling */
+/* Delete button styling (trash can emoji button) */
 .delete-btn {
   background: none;
   /* Transparent background initially */
@@ -535,21 +895,103 @@
 }
 
 /* =============================================================================
-   11. RESPONSIVE DESIGN - MOBILE & TABLET ADAPTATIONS
+   12. MODAL ACTIONS - FORM SUBMISSION AND CANCEL BUTTONS
    ============================================================================= */
 
-/* Styles for tablets and small laptops */
+/* Container for modal action buttons (Cancel, Submit)
+   Appears at the bottom of modal forms */
+.modal-actions {
+  display: flex;
+  /* Horizontal layout for buttons */
+  justify-content: flex-end;
+  /* Align buttons to the right */
+  gap: 10px;
+  /* 10px space between buttons */
+  margin-top: 20px;
+  /* Space above button row */
+  padding-top: 20px;
+  /* Additional padding above buttons */
+  border-top: 1px solid #eee;
+  /* Light border to separate from form */
+}
+
+/* =============================================================================
+   13. LOADING & ERROR STATES - USER FEEDBACK FOR ASYNC OPERATIONS
+   ============================================================================= */
+
+/* Common styles for loading and error messages
+   These appear when the app is fetching data or encounters problems */
+.loading,
+.error {
+  text-align: center;
+  /* Center the text */
+  padding: 40px;
+  /* Large padding for visual prominence */
+  font-size: 1.2em;
+  /* Larger text for better visibility */
+}
+
+/* Error message specific styling */
+.error,
+.error-message {
+  color: #dc3545;
+  /* Bootstrap-style red text */
+  background: #f8d7da;
+  /* Light red background */
+  border: 1px solid #f5c6cb;
+  /* Slightly darker red border */
+  border-radius: 6px;
+  /* Rounded corners */
+  padding: 10px;
+  /* Padding for error messages */
+  margin: 10px 0;
+  /* Margin above and below */
+}
+
+/* Loading message styling */
+.loading {
+  color: #666;
+  /* Subtle gray text */
+}
+
+/* Login help text that appears in the admin login modal */
+.login-help {
+  margin-top: 20px;
+  /* Space above help text */
+  padding: 15px;
+  /* Padding around help content */
+  background: #f8f9fa;
+  /* Light gray background */
+  border-radius: 6px;
+  /* Rounded corners */
+  text-align: center;
+  /* Center the help text */
+}
+
+/* Code snippets within login help text */
+.login-help code {
+  background: #e9ecef;
+  /* Slightly darker gray background */
+  padding: 2px 6px;
+  /* Small padding around code text */
+  border-radius: 3px;
+  /* Rounded corners for code blocks */
+}
+
+/* =============================================================================
+   14. RESPONSIVE DESIGN - MOBILE AND TABLET ADAPTATIONS
+   ============================================================================= */
+
+/* Styles for tablets and small laptops (screens smaller than 768px) */
 @media (max-width: 768px) {
 
-  /* Reduce container padding on smaller screens */
+  /* Reduce container padding on smaller screens to maximize content space */
   .container {
     padding: 10px;
     /* Less padding for more content space */
   }
 
-  <<<<<<< HEAD
-
-  /* Stack header items vertically on small screens */
+  /* Stack header items vertically on small screens instead of side-by-side */
   .header {
     flex-direction: column;
     /* Stack title above controls */
@@ -558,12 +1000,13 @@
   }
 
   /* Spread header info across available width */
-  .header-info {
+  .user-info,
+  .admin-info {
     justify-content: space-between;
     /* Spread items apart */
   }
 
-  /* Reduce table cell padding for more content space */
+  /* Reduce table cell padding for more content space on mobile */
   .games-table th,
   .games-table td {
     padding: 6px 4px;
@@ -577,456 +1020,17 @@
     font-size: 13px;
     /* Reduce header font size */
   }
-}
 
-/* =============================================================================
-   12. PRINT STYLES - FOR PRINTING THE TABLE
-   ============================================================================= */
-
-/* Styles that apply when printing the page */
-@media print {
-
-  /* Hide interactive elements when printing */
-  .export-btn {
-    display: none;
-    /* Don't show export button in printout */
+  /* Stack form rows vertically on mobile instead of side-by-side */
+  .form-row {
+    grid-template-columns: 1fr;
+    /* Single column layout */
   }
 
-  /* Remove scroll container styling for print */
-  .table-container {
-    overflow: visible;
-    /* Show all content when printing */
-    border: none;
-    /* Remove border for clean print */
-    box-shadow: none;
-    /* Remove shadow for clean print */
-  }
-
-  /* Ensure table borders are visible when printed */
-  .games-table th,
-  .games-table td {
-    border: 1px solid #000;
-    /* Black borders for better print visibility */
-    padding: 4px;
-    /* Minimal padding to save space */
+  /* Make controls section stack vertically on mobile */
+  .controls {
+    flex-direction: column;
   }
 }
 
-/* Fix for oversized Region header covering other columns */
-.games-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-  /* Forces equal column distribution */
-  min-width: 1200px;
-}
-
-/* Reset all column headers to equal width distribution */
-.games-table th {
-  width: calc(100% / 11);
-  /* 10 data columns + 1 actions column = 11 total */
-  max-width: none;
-  min-width: none;
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
-  padding: 12px 8px;
-  text-align: left;
-  font-weight: 600;
-  color: #495057;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Reset all data cells to match header widths */
-.games-table td {
-  width: calc(100% / 11);
-  max-width: none;
-  min-width: none;
-  border: 1px solid #dee2e6;
-  padding: 8px 12px;
-  vertical-align: top;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Make title column slightly wider since game names can be long */
-.games-table th:nth-child(1),
-.games-table td:nth-child(1) {
-  width: calc(100% / 8);
-  /* Give title column more space */
-  white-space: normal;
-  /* Allow title text to wrap */
-}
-
-/* Make ID column narrower since IDs are short */
-.games-table th:nth-child(3),
-.games-table td:nth-child(3) {
-  width: calc(100% / 20);
-  /* Make ID column very narrow */
-}
-
-/* =============================================================================
-   13. ADDITIONAL UI COMPONENTS & STATES
-   ============================================================================= */
-
-/* These styles support various UI components like modals, buttons, and states
-   that are referenced in the main App.js file but defined elsewhere in the
-   complete stylesheet. The main table and layout styles above are the core
-   styles that make the spreadsheet interface functional and visually appealing. */
-
-/* Note: Additional styles for modals, login forms, and other components
-   would typically be included here or in separate CSS modules for larger
-   applications. The styles above focus on the main table interface which
-   is the core feature of this games database application. */
-=======to {
-  transform: rotate(360deg);
-}
-
-/* Updated App.css with authentication and modal styles */
-
-.container {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-}
-
-/* Admin Login Modal Styles */
-.admin-login-modal {
-  background: white;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
-
-.admin-login-form {
-  padding: 20px;
-}
-
-.admin-login-btn {
-  background: #6c757d;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.admin-login-btn:hover {
-  background: #5a6268;
-}
-
-.admin-info {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.admin-info span {
-  font-weight: 500;
-  color: #666;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 500;
-  color: #555;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  font-size: 16px;
-  transition: border-color 0.3s;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-.login-btn {
-  width: 100%;
-  padding: 12px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.login-btn:hover:not(:disabled) {
-  background: #0056b3;
-}
-
-.login-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.login-help {
-  margin-top: 20px;
-  padding: 15px;
-  background: #f8f9fa;
-  border-radius: 6px;
-  text-align: center;
-}
-
-.login-help code {
-  background: #e9ecef;
-  padding: 2px 6px;
-  border-radius: 3px;
-}
-
-.error-message {
-  color: #dc3545;
-  background: #f8d7da;
-  border: 1px solid #f5c6cb;
-  padding: 10px;
-  border-radius: 6px;
-  margin: 10px 0;
-}
-
-/* Header Styles */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.header h1 {
-  margin: 0;
-  color: #333;
-  font-size: 2em;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.user-info span {
-  font-weight: 500;
-  color: #666;
-}
-
-.logout-btn {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.2s;
-}
-
-.logout-btn:hover {
-  background: #c82333;
-}
-
-/* Controls Section */
-.controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.stats {
-  display: flex;
-  gap: 20px;
-}
-
-.games-count,
-.columns-count {
-  font-weight: 500;
-  color: #666;
-  font-size: 1.1em;
-}
-
-.actions {
-  display: flex;
-  gap: 10px;
-}
-
-.add-btn {
-  background: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.add-btn:hover {
-  background: #218838;
-}
-
-.export-btn {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.export-btn:hover {
-  background: #0056b3;
-}
-
-.retry-btn {
-  background: #ffc107;
-  color: #212529;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  margin-top: 10px;
-}
-
-/* Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.modal-header h3 {
-  margin: 0;
-  color: #333;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #999;
-  padding: 0;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.close-btn:hover {
-  color: #333;
-}
-
-.add-game-form {
-  padding: 20px;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-bottom: 15px;
-}
-
-.checkbox-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.checkbox-group label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-}
-
-.cancel-btn {
-  background: #6c757d;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.cancel-btn:hover {
-  background: #5a6268;
-}
-
-.submit-btn {
-  background: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-}
+/* Stack stats above actions */
