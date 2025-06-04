@@ -547,7 +547,8 @@
     /* Less padding for more content space */
   }
 
-<<<<<<< HEAD
+  <<<<<<< HEAD
+
   /* Stack header items vertically on small screens */
   .header {
     flex-direction: column;
@@ -682,10 +683,9 @@
    would typically be included here or in separate CSS modules for larger
    applications. The styles above focus on the main table interface which
    is the core feature of this games database application. */
-=======
-  to {
-    transform: rotate(360deg);
-  }
+=======to {
+  transform: rotate(360deg);
+}
 }
 
 /* Updated App.css with authentication and modal styles */
@@ -1030,4 +1030,4 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
->>>>>>> 77929000a467133b725515597145e4bb8c6901ca
+  >>>>>>>77929000a467133b725515597145e4bb8c6901ca
