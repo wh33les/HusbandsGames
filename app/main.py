@@ -152,20 +152,34 @@ async def get_current_admin(current_user: str = Depends(verify_admin_token)):
     return {"username": ADMIN_USER["username"], "name": ADMIN_USER["name"]}
 
 @app.post("/api/admin/games", response_model=GameResponse)
-async def create_game(game: GameCreate, current_user: str = Depends(verify_admin_token)):
-    # Here you'll integrate with your existing database code
-    # Example integration with your existing models:
-    # db_game = models.Game(**game.dict())
-    # db.add(db_game)
-    # db.commit()
-    # db.refresh(db_game)
-    # return db_game
+async def create_game(game: GameCreate, current_user: str = Depends(verify_admin_token), db: Session = Depends(get_db)):
+    # Create a new game using your existing models
+    db_game = models.Game(
+        title=game.title,
+        platform=game.platform,
+        genre=game.genre,
+        release_year=game.release_year,
+        price=game.price,
+        region=game.region,
+        publisher=game.publisher,
+        opened=game.opened
+    )
     
-    # Placeholder response for now:
+    db.add(db_game)
+    db.commit()
+    db.refresh(db_game)
+    
     return GameResponse(
-        id=999,  # This should come from your database
-        created_at=datetime.utcnow(),
-        **game.dict()
+        id=db_game.id,
+        title=db_game.title,
+        platform=db_game.platform,
+        genre=db_game.genre,
+        release_year=db_game.release_year,
+        price=db_game.price,
+        region=db_game.region,
+        publisher=db_game.publisher,
+        opened=db_game.opened,
+        created_at=db_game.created_at
     )
 
 @app.put("/api/admin/games/{game_id}", response_model=GameResponse)
