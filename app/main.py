@@ -113,13 +113,13 @@ def verify_admin_token(credentials: HTTPAuthorizationCredentials = Depends(secur
 
 # Public Routes (no authentication required)
 # Route to get all games
-@app.get("/api/games/")
+@app.get("/games/")
 def get_games(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_games(db=db, skip=skip, limit=limit)
 
 
 # Route to get a game by ID
-@app.get("/api/games/{game_id}")
+@app.get("/games/{game_id}")
 def get_game(game_id: int, db: Session = Depends(get_db)):
     return crud.get_game(db=db, game_id=game_id)
 
@@ -127,7 +127,7 @@ def get_game(game_id: int, db: Session = Depends(get_db)):
 async def root():
     return {"message": "Husband's Games API"}
 
-@app.get("/api/health")
+@app.get("/health")
 async def health_check():
     return {"status": "healthy"}
 
