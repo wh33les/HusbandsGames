@@ -354,6 +354,7 @@ const App = () => {
 
   // CSV export function
   const exportToCSV = () => {
+    // Don't export if there's no data
     if (!data.length) return;
 
     const allKeys = [...new Set(data.flatMap(item => Object.keys(item)))];
