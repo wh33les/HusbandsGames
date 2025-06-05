@@ -27,7 +27,7 @@
 
 import React, { useState, useEffect } from 'react';
 import config from './config';  // Contains API_URL and other configuration
-import './App.css';             // All styling for the application
+import './App.css'; // All styling for the application
 
 // =============================================================================
 // ADMIN LOGIN MODAL COMPONENT
@@ -116,6 +116,10 @@ const AdminLoginModal = ({ isOpen, onClose, onLogin, isLoading }) => {
           <button onClick={onClose} className="close-btn">&times;</button>
         </div>
         */}
+        <div className="modal-header">
+          <h3>Admin login</h3>
+          <button onClick={onClose} className="close-btn">&times;</button>
+        </div>
 
         {/* Login form with minimal fields for compact design */}
         <form onSubmit={handleSubmit} className="admin-login-form">
@@ -135,7 +139,7 @@ const AdminLoginModal = ({ isOpen, onClose, onLogin, isLoading }) => {
 
           {/* Password field for admin authentication */}
           <div className="form-group">
-            <label>Password:</label>
+            {/*<label>Password:</label>*/}
             <input
               type="password"
               value={credentials.password}
@@ -150,9 +154,9 @@ const AdminLoginModal = ({ isOpen, onClose, onLogin, isLoading }) => {
 
           {/* Modal action buttons - uses compact styling */}
           <div className="modal-actions">
-            <button type="button" onClick={onClose} className="cancel-btn">
+            {/*<button type="button" onClick={onClose} className="cancel-btn">
               Cancel
-            </button>
+            </button>*/}
             <button type="submit" disabled={isLoading} className="submit-btn">
               {isLoading ? 'Logging in...' : 'Login'}
             </button>
@@ -163,8 +167,8 @@ const AdminLoginModal = ({ isOpen, onClose, onLogin, isLoading }) => {
         <div className="login-help">
           <p><small>Admin login is required to add, edit, or delete games.</small></p>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
@@ -351,9 +355,9 @@ const AddGameModal = ({ isOpen, onClose, onAddGame, isLoading }) => {
 
           {/* Form action buttons - positioned at bottom */}
           <div className="modal-actions">
-            <button type="button" onClick={onClose} className="cancel-btn">
+            {/*<button type="button" onClick={onClose} className="cancel-btn">
               Cancel
-            </button>
+            </button>*/}
             <button type="submit" disabled={isLoading} className="submit-btn">
               {isLoading ? 'Adding...' : 'Add Game'}
             </button>
@@ -722,7 +726,7 @@ const App = () => {
           {isAdmin ? (
             // Show admin info and logout button when logged in
             <div className="admin-info">
-              <span>👤 {adminUser?.name}</span>
+              <span>👤 {adminUser?.name}</span><p></p>
               <button onClick={handleAdminLogout} className="logout-btn">Logout</button>
             </div>
           ) : (
@@ -737,75 +741,77 @@ const App = () => {
       {/* Controls section with statistics and action buttons */}
       <div className="controls">
         <div className="stats">
-          <span className="games-count">Total games: {data.length}</span>
-          <span className="columns-count">Columns: {getColumnHeaders().length}</span>
-        </div>
-        <div className="actions">
-          {/* Add Game button - only visible to admins */}
-          {isAdmin && (
-            <button onClick={() => setShowAddModal(true)} className="add-btn">
-              ➕ Add Game
-            </button>
-          )}
-          {/* Export button - available to all users */}
-          <button onClick={exportToCSV} className="export-btn">
-            📊 Export to CSV
-          </button>
+          <span className="games-count">{data.length} games shown</span>
+          {/*<span className="columns-count">Columns: {getColumnHeaders().length}</span>*/}
         </div>
       </div>
 
       {/* Main content area - either empty state or data table */}
-      {data.length === 0 ? (
-        // Empty state when no games are in the database
-        <div className="empty-state">
-          <p>No games found.</p>
-          {isAdmin && (
-            <button onClick={() => setShowAddModal(true)} className="add-btn">
-              ➕ Add First Game
-            </button>
-          )}
-        </div>
-      ) : (
-        // Data table showing all games
-        <div className="table-container">
-          <table className="games-table">
+      {
+        data.length === 0 ? (
+          // Empty state when no games are in the database
+          <div className="empty-state">
+            <p>No games found.</p>
+            {isAdmin && (
+              <button onClick={() => setShowAddModal(true)} className="add-btn">
+                ➕ Add First Game
+              </button>
+            )}
+          </div>
+        ) : (
+          // Data table showing all games
+          <div className="table-container">
+            <table className="games-table">
 
-            {/* Table header with sortable column headers */}
-            <thead>
-              <tr>
-                {getColumnHeaders().map((header) => (
-                  <th
-                    key={header}
-                    onClick={() => handleSort(header)}
-                    className="sortable-header"
-                  >
-                    <div className="header-content">
-                      <span className="header-text">{header}</span>
-                      {getSortIcon(header)}
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-
-            {/* Table body with game data rows */}
-            <tbody>
-              {sortedData.map((game, index) => (
-                <tr key={game.id || index}>
+              {/* Table header with sortable column headers */}
+              <thead>
+                <tr>
                   {getColumnHeaders().map((header) => (
-                    <td key={header}>
-                      {/* Safely display game data, handling null/undefined values */}
-                      {game[header] !== null && game[header] !== undefined
-                        ? String(game[header])
-                        : ''}
-                    </td>
+                    <th
+                      key={header}
+                      onClick={() => handleSort(header)}
+                      className="sortable-header"
+                    >
+                      <div className="header-content">
+                        <span className="header-text">{header}</span>
+                        {getSortIcon(header)}
+                      </div>
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+
+              {/* Table body with game data rows */}
+              <tbody>
+                {sortedData.map((game, index) => (
+                  <tr key={game.id || index}>
+                    {getColumnHeaders().map((header) => (
+                      <td key={header}>
+                        {/* Safely display game data, handling null/undefined values */}
+                        {game[header] !== null && game[header] !== undefined
+                          ? String(game[header])
+                          : ''}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+      }
+      <div className="actions">
+        {/* Export button - available to all users */}
+        <button onClick={exportToCSV} className="export-btn">
+          📊 Export to CSV
+        </button>
+        {/* Add Game button - only visible to admins */}
+        {isAdmin && (
+          <button onClick={() => setShowAddModal(true)} className="add-btn">
+            ➕ Add Game
+          </button>
+        )}
+      </div>
 
       {/* Admin Login Modal - always rendered but conditionally visible
           Uses compact design with minimal fields and tight spacing */}
@@ -818,15 +824,17 @@ const App = () => {
 
       {/* Add Game Modal - only rendered when admin is logged in
           FIXED: Now uses single-column layout to prevent field cutoff */}
-      {isAdmin && (
-        <AddGameModal
-          isOpen={showAddModal}
-          onClose={() => setShowAddModal(false)}
-          onAddGame={handleAddGame}
-          isLoading={isAddingGame}
-        />
-      )}
-    </div>
+      {
+        isAdmin && (
+          <AddGameModal
+            isOpen={showAddModal}
+            onClose={() => setShowAddModal(false)}
+            onAddGame={handleAddGame}
+            isLoading={isAddingGame}
+          />
+        )
+      }
+    </div >
   );
 };
 
