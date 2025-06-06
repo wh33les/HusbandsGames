@@ -1,6 +1,6 @@
 /* Styles for the pages in my website */
 body {
-  background-color: #e7b307;
+  background-color: #ca7804;
   font-family: Helvetica;
   opacity: 0.9;
 }
@@ -14,7 +14,7 @@ h4 {
 }
 
 hr {
-  border-color: #19181a
+  border-color: #e7b307
 }
 
 /* for unvisited links */
@@ -36,7 +36,7 @@ a:hover {
 }
 
 div {
-  background-color: #19181a;
+  background-color: #000000;
   color: #e7b307;
   width: 800px;
   margin: auto;

@@ -718,31 +718,41 @@ const App = () => {
 
   return (
     <div className="container">
-
       {/* Application header with title and admin controls */}
       <div className="header">
-        <h1>Husband's Games</h1>
-        <div className="header-actions">
+        <div className="top">
+          <h1>Husband's Games</h1>
+          <hr></hr>
+        </div>
+        <div className="right-side-container">
           {isAdmin ? (
-            // Show admin info and logout button when logged in
             <div className="admin-info">
-              <span>👤 {adminUser?.name}</span><p></p>
+              <span>👤 {adminUser?.name}</span>
               <button onClick={handleAdminLogout} className="logout-btn">Logout</button>
             </div>
           ) : (
-            // Show login button when not authenticated
             <button onClick={() => setShowAdminLogin(true)} className="admin-login-btn">
               🔐 Admin Login
             </button>
           )}
+
+          <div className="actions">
+            {isAdmin && (
+              <button onClick={() => setShowAddModal(true)} className="add-btn">
+                ➕ Add Game
+              </button>
+            )}
+            <button onClick={exportToCSV} className="export-btn">
+              📊 Export to CSV
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Controls section with statistics and action buttons */}
       <div className="controls">
         <div className="stats">
           <span className="games-count">{data.length} games shown</span>
-          {/*<span className="columns-count">Columns: {getColumnHeaders().length}</span>*/}
+
         </div>
       </div>
 
@@ -800,18 +810,7 @@ const App = () => {
           </div>
         )
       }
-      <div className="actions">
-        {/* Export button - available to all users */}
-        <button onClick={exportToCSV} className="export-btn">
-          📊 Export to CSV
-        </button>
-        {/* Add Game button - only visible to admins */}
-        {isAdmin && (
-          <button onClick={() => setShowAddModal(true)} className="add-btn">
-            ➕ Add Game
-          </button>
-        )}
-      </div>
+
 
       {/* Admin Login Modal - always rendered but conditionally visible
           Uses compact design with minimal fields and tight spacing */}

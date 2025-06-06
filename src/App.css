@@ -1,5 +1,5 @@
 /* =============================================================================
-   FINAL COMPLETE FIX - LARGER MODAL AND PROPER FIELD SIZING
+   MODAL STYLES
    ============================================================================= */
 
 /* Modal overlay */
@@ -18,7 +18,7 @@
   box-sizing: border-box;
 }
 
-/* COMPACT LOGIN MODAL - keep existing small size */
+/* COMPACT LOGIN MODAL */
 .admin-login-modal {
   background: #e7b307;
   border-radius: 8px;
@@ -34,17 +34,14 @@
   flex-direction: column;
 }
 
-/* LARGER ADD GAME MODAL - increased size to fit all content properly */
+/* LARGER ADD GAME MODAL */
 .modal-content {
   background: #e7b307;
   border-radius: 8px;
   width: 100%;
   max-width: 450px;
-  /* INCREASED: From 320px to 450px */
   min-width: 400px;
-  /* INCREASED: From 300px to 400px */
   max-height: 90vh;
-  /* Allow tall content */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   position: relative;
   box-sizing: border-box;
@@ -53,13 +50,12 @@
   overflow: hidden;
 }
 
-/* Modal header - normal size for Add Game modal */
+/* Modal header */
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
-  /* INCREASED: Normal padding for larger modal */
   border-bottom: 1px solid #e9ecef;
   background: #e7b307;
   flex-shrink: 0;
@@ -69,7 +65,6 @@
   margin: 0;
   color: #19181a;
   font-size: 1.3em;
-  /* INCREASED: Normal title size */
   font-weight: 600;
 }
 
@@ -77,12 +72,10 @@
   background: none;
   border: none;
   font-size: 24px;
-  /* INCREASED: Normal close button size */
   cursor: pointer;
   color: #19181a;
   padding: 0;
   width: 30px;
-  /* INCREASED: Normal close button size */
   height: 30px;
   display: flex;
   align-items: center;
@@ -95,11 +88,10 @@
   background: #6c757d;
 }
 
-/* LARGER FORM AREA - normal padding for comfortable use */
+/* Form area */
 .add-game-form,
 .admin-login-form {
   padding: 0px;
-  /* INCREASED: Normal padding for larger modal */
   background: #19181a;
   flex: 1;
   overflow-y: auto;
@@ -127,45 +119,34 @@
   background: #999;
 }
 
-/* NORMAL FORM GROUPS - comfortable spacing */
+/* Form groups */
 .form-group {
   margin-bottom: 0px;
-  /* INCREASED: Normal spacing between fields */
 }
 
-/* NORMAL FORM LABELS */
 .form-group label {
   display: block;
   margin-bottom: 10px;
-  /* INCREASED: Normal label spacing */
   font-weight: 500;
   color: #e7b307;
   font-size: 16px;
-  /* INCREASED: Normal label font size */
 }
 
-/* NORMAL FORM INPUTS - comfortable sizing */
 .form-group input,
 .form-group select {
   width: 100%;
   padding: 10px 12px;
-  /* INCREASED: Normal comfortable padding */
   border: 2px solid #dee2e6;
-  /* INCREASED: Normal border thickness */
   border-radius: 6px;
-  /* INCREASED: Normal border radius */
   font-size: 14px;
-  /* INCREASED: Normal font size */
   transition: border-color 0.15s ease-in-out;
   box-sizing: border-box;
   background: white;
   max-width: 100%;
   min-width: 0;
   min-height: 40px;
-  /* INCREASED: Normal input height */
 }
 
-/* Focus states */
 .add-game-form .form-group input:focus,
 .add-game-form .form-group select:focus {
   outline: none;
@@ -177,10 +158,9 @@
   color: #6c757d;
   opacity: 1;
   font-size: 14px;
-  /* INCREASED: Normal placeholder size */
 }
 
-/* PROPER CHECKBOX STYLING */
+/* Checkbox styling */
 .add-game-form .checkbox-group {
   display: flex;
   align-items: center;
@@ -193,70 +173,47 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  /* INCREASED: Normal gap */
   cursor: pointer;
   font-size: 16px;
-  /* INCREASED: Normal font size */
   margin-bottom: -10px;
 }
 
 .add-game-form .checkbox-group input[type="checkbox"] {
   width: auto;
-  /* IMPORTANT: Don't stretch checkbox */
   height: auto;
-  /* IMPORTANT: Don't stretch checkbox */
   min-height: auto;
-  /* IMPORTANT: Don't force minimum height */
   margin-left: -17px;
-  /* IMPORTANT: Remove margins */
   padding: 0;
-  /* IMPORTANT: Remove padding */
 }
 
-/* NORMAL MODAL ACTIONS - comfortable button sizing */
+/* Modal actions */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  /* CHANGED: Right-align buttons */
   gap: 12px;
-  /* INCREASED: Normal gap */
   margin-top: -10px;
-  /* INCREASED: Normal margin */
   margin-bottom: 10px;
   padding-top: 20px;
   padding-bottom: 20px;
-  /* INCREASED: Normal padding */
-  /*border-top: 1px solid #e9ecef;*/
   flex-shrink: 0;
   background: #19181a;
 }
 
-/* NORMAL BUTTONS - comfortable sizing */
-/*.add-game-form .cancel-btn,
-.add-game-form */
 .submit-btn {
   padding: 10px 20px;
-  /* INCREASED: Normal button padding */
   border: none;
   border-radius: 6px;
-  /* INCREASED: Normal border radius */
   font-size: 16px;
-  /* INCREASED: Normal font size */
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
   text-align: center;
   min-height: 40px;
-  /* INCREASED: Normal button height */
   background: #6c757d;
   color: white;
 }
 
-.add-game-form .cancel-btn:hover {
-  background: #5a6268;
-}
-
-
+.add-game-form .cancel-btn:hover,
 .submit-btn:hover:not(:disabled) {
   background: #5a6268;
 }
@@ -267,68 +224,10 @@
   cursor: not-allowed;
 }
 
-/* LOGIN MODAL - keep existing compact styles */
-/*.admin-login-form {
-  padding: 0px 15px;
-  background: #19181a;
-  flex: 1;
-  overflow-y: auto;
-}*/
-
-/*.admin-login-form .form-group {
-  margin-bottom: 0px;
-}
-
-.admin-login-form .form-group label {
-  display: block;
-  margin-bottom: 3px;
-  font-weight: 500;
-  color: #e7b307;
-  font-size: 14px;
-}
-
-.admin-login-form .form-group input {
-  width: 100%;
-  padding: 6px 8px;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: border-color 0.15s ease-in-out;
-  box-sizing: border-box;
-  background: white;
-}
-
-.admin-login-form .modal-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 10px;
-  padding-top: 0px;
-  border-top: 1px solid #19181a;
-  flex-shrink: 0;
-}
-
-/*
-.admin-login-form .cancel-btn,
-.admin-login-form .submit-btn {
-  flex: 1;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.15s ease-in-out;
-  text-align: center;
-  min-height: 28px;
-}*/
-
 .login-help {
   padding: 20px 15px;
-
   margin-top: -25px;
   background: #19181a;
-  /*border-top: 1px solid #19181a;*/
   text-align: left;
   flex-shrink: 0;
 }
@@ -340,7 +239,6 @@
   line-height: 1.3;
 }
 
-/* ERROR MESSAGES */
 .error-message {
   color: #db949b;
   background: #19181a;
@@ -351,41 +249,7 @@
   font-size: 14px;
 }
 
-/* MOBILE RESPONSIVENESS */
-@media (max-width: 500px) {
-  .modal-overlay {
-    padding: 10px;
-  }
-
-  .modal-content {
-    min-width: 300px;
-    max-width: none;
-    max-height: 95vh;
-  }
-
-  .add-game-form {
-    padding: 15px;
-  }
-
-  .modal-actions {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .cancel-btn,
-  .submit-btn {
-    width: 100%;
-    min-height: 44px;
-  }
-
-  .form-group input {
-    font-size: 16px;
-    /* Prevent zoom on iOS */
-    padding: 12px;
-  }
-}
-
-/* OVERFLOW PREVENTION */
+/* Overflow prevention */
 .modal-content *,
 .admin-login-modal * {
   box-sizing: border-box;
@@ -404,46 +268,52 @@
 }
 
 /* =============================================================================
-   APPLICATION STYLES (UNCHANGED)
+   APPLICATION STYLES
    ============================================================================= */
 
 .container {
   max-width: 100%;
   margin: 0 auto;
-  padding: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
+/* HEADER LAYOUT */
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  width: 104%;
   flex-wrap: wrap;
   gap: 10px;
+  margin-left: -35px;
+  margin-top: -30px;
+}
+
+.top {
+  width: 96%;
+  margin-left: -20px;
+  margin-top: -15px;
 }
 
 .header h1 {
-  margin: 0;
   color: #e7b307;
   font-size: 2em;
 }
 
-.user-info,
+/* ADMIN INFO */
 .admin-info {
   display: flex;
-  align-items: left;
   gap: 0px;
   flex-direction: column;
+  margin-left: -30px;
+  margin-top: -30px;
 }
 
-.user-info span,
 .admin-info span {
   font-weight: 500;
   color: #e7b307;
-  font-size: 16;
+  font-size: 16px;
 }
 
+/* BUTTON STYLING */
 .admin-login-btn,
 .logout-btn,
 .add-btn,
@@ -451,86 +321,54 @@
 .retry-btn {
   transition: background-color 0.2s;
   padding: 10px 20px;
-  /* INCREASED: Normal button padding */
   border: none;
   border-radius: 6px;
-  /* INCREASED: Normal border radius */
   font-size: 16px;
-  /* INCREASED: Normal font size */
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
   text-align: center;
   min-height: 40px;
-  /* INCREASED: Normal button height */
   background: #6c757d;
   color: white;
   width: auto !important;
   max-width: fit-content;
-  /* Limit width to content size */
   flex: none;
-  /* Override any flex grow/shrink */
   display: inline-block;
-  /* Ensure it behaves like other buttons */
 }
 
-
-.admin-login-btn {
-  margin-left: 39px;
-}
-
-.admin-login-btn:hover {
+.admin-login-btn:hover,
+.logout-btn:hover,
+.add-btn:hover,
+.export-btn:hover {
   background: #5a6268;
 }
 
 .logout-btn {
   margin-left: 25px;
-  margin-top: -10px;
-  font-size: 16px;
-}
-
-.logout-btn:hover {
-  background: #5a6268;
-}
-
-/*.add-btn {
-  background: #28a745;
-  color: white;
-  padding: 10px 20px;
-  font-size: 14px;
-}*/
-
-.add-btn:hover {
-  background: #5a6268;
+  margin-top: 20px;
 }
 
 .export-btn {
-  margin-left: 0px;
+  margin-left: -25px;
 }
 
-.export-btn:hover {
-  background: #5a6268;
-}
-
-/*.retry-btn {
-  background: #ffc107;
-  color: #212529;
-  padding: 10px 20px;
-  margin-top: 10px;
-}*/
-
-/*.controls {
+/* CONTROLS SECTION */
+.controls {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: -20px;
   flex-wrap: wrap;
   gap: 15px;
-}*/
+  margin-left: -47px;
+}
 
 .stats {
   display: flex;
   margin-top: -40px;
+  flex: 0 0 auto;
 }
 
 .games-count,
@@ -538,14 +376,33 @@
   font-weight: 500;
   color: #e7b307;
   font-size: 16px;
-  margin-bottom: -20px;
+  margin-bottom: -30px;
 }
 
+/* ACTIONS */
 .actions {
+  width: 94%;
   display: flex;
-  gap: 10px;
+  gap: 40px;
+  justify-content: flex-end;
+  margin-left: auto;
+  padding-right: 0px;
+  margin-bottom: -15px;
 }
 
+.header-actions {
+  width: 100%;
+  margin-top: -25px;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.right-side-container {
+  margin-top: -25px;
+  margin-left: -10px;
+}
+
+/* LOADING AND ERROR STATES */
 .loading,
 .error {
   text-align: center;
@@ -575,46 +432,39 @@
   font-size: 1.1em;
 }
 
-/* 1. CENTER TABLE HORIZONTALLY AND ADD SCROLLBAR */
+/* =============================================================================
+   TABLE STYLING
+   ============================================================================= */
+
 .table-container {
   overflow: auto;
-  /* Enables scrollbar */
-  background: #19181a;
+  background: #000000;
   margin-top: -10px;
   margin-left: -30px;
-  /* Centers horizontally */
   margin-right: 20px;
-  /* Centers horizontally */
-  width: 98%;
-  /* Or whatever width you prefer */
-
-
+  width: 96%;
 }
 
 .games-table {
   width: 100%;
-  /* Fill the container */
   border-collapse: collapse;
   table-layout: fixed;
-  min-width: 900px;
-  /* Minimum width for scrolling */
+  min-width: 1000px;
   font-size: 14px;
   margin: 0 auto;
-  /* Center the table within container */
+  background: #19181a;
 }
 
-/* 2. MOVE HEADER TEXT FURTHER LEFT */
 .games-table th {
-  background: #19181a;
+  background: #000000;
   font-weight: 600;
+  font-size: 16px;
   color: #e7b307;
-  /* Changed to match your theme */
   position: sticky;
   top: 0;
   z-index: 10;
   text-align: left;
   padding-left: -20px;
-  /* Increased left padding to move text left */
   border: 1px solid #e7b307;
   padding-top: 0px;
   padding-bottom: 0px;
@@ -631,124 +481,86 @@
   padding-right: 10px;
 }
 
-/* METHOD 1: Set specific widths for individual columns by their order */
+/* COLUMN WIDTHS */
 .games-table th:nth-child(1),
-/* Title column */
 .games-table td:nth-child(1) {
   width: 200px;
   min-width: 200px;
 }
 
 .games-table th:nth-child(2),
-/* Platform column */
 .games-table td:nth-child(2) {
-  width: 82px;
-  min-width: 82px;
+  width: 87px;
+  min-width: 87px;
 }
 
 .games-table th:nth-child(3),
-/* Genre column */
 .games-table td:nth-child(3) {
-  width: 65px;
-  min-width: 65px;
+  width: 70px;
+  min-width: 70px;
 }
 
 .games-table th:nth-child(4),
-/* Release Year column */
 .games-table td:nth-child(4) {
-  width: 105px;
-  min-width: 105px;
+  width: 116px;
+  min-width: 116px;
 }
 
 .games-table th:nth-child(5),
-/* Price column */
 .games-table td:nth-child(5) {
-  width: 60px;
-  min-width: 60px;
+  width: 62px;
+  min-width: 62px;
 }
 
 .games-table th:nth-child(6),
-/* Region column */
 .games-table td:nth-child(6) {
-  width: 72px;
-  min-width: 72px;
+  width: 76px;
+  min-width: 76px;
 }
 
 .games-table th:nth-child(7),
-/* Publisher column */
 .games-table td:nth-child(7) {
-  width: 95px;
-  min-width: 95px;
+  width: 93px;
+  min-width: 93px;
 }
 
 .games-table th:nth-child(8),
-/* Opened column */
 .games-table td:nth-child(8) {
-  width: 77px;
-  min-width: 77px;
+  width: 85px;
+  min-width: 85px;
 }
 
 .games-table th:nth-child(9),
-/* Id column */
 .games-table td:nth-child(9) {
-  width: 37px;
-  min-width: 37px;
+  width: 40px;
+  min-width: 40px;
 }
 
 .games-table th:nth-child(10),
-/* Created column */
 .games-table td:nth-child(10) {
-  width: 200px;
-  min-width: 200px;
+  width: 195px;
+  min-width: 195px;
 }
 
-.games-table tbody tr:nth-child(even) {
+/* TABLE ROW STYLING */
+.games-table tbody tr:nth-child(odd) {
   background-color: #5a6268;
   color: #000000;
   font-weight: 600;
 }
 
-/* 3. CHANGE HOVER OUTLINE/BACKGROUND */
+/* SORTABLE HEADERS */
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
 .sortable-header:hover {
   background: #e7b307 !important;
-  /* Golden background on hover */
   color: #19181a !important;
-  /* Dark text on golden background */
-  outline: 2px solid #e7b307;
-  /* Optional: add outline */
-  outline-offset: -2px;
-  /* Keep outline inside the cell */
-}
-
-/* Alternative hover style - choose one */
-/* 
-.sortable-header:hover {
-  background: rgba(231, 179, 7, 0.2) !important;
   outline: 2px solid #e7b307;
   outline-offset: -2px;
-}
-*/
-
-/* Optional: Style the scrollbar to match your theme */
-.table-container::-webkit-scrollbar {
-  height: 10px;
-}
-
-.table-container::-webkit-scrollbar-track {
-  background: #19181a;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-  background: #e7b307;
-  border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb:hover {
-  background: #d4a006;
-}
-
-.header-actions {
-  margin-left: -40px;
 }
 
 .header-content {
@@ -775,7 +587,59 @@
   color: #007bff;
 }
 
+/* CUSTOM SCROLLBAR */
+.table-container::-webkit-scrollbar {
+  height: 10px;
+}
 
+.table-container::-webkit-scrollbar-track {
+  background: #19181a;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #e7b307;
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #d4a006;
+}
+
+/* =============================================================================
+   MOBILE RESPONSIVENESS
+   ============================================================================= */
+
+@media (max-width: 500px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .modal-content {
+    min-width: 300px;
+    max-width: none;
+    max-height: 95vh;
+  }
+
+  .add-game-form {
+    padding: 15px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cancel-btn,
+  .submit-btn {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .form-group input {
+    font-size: 16px;
+    padding: 12px;
+  }
+}
 
 @media (max-width: 768px) {
   .container {
