@@ -630,8 +630,13 @@ const App = () => {
   if (isLoading) {
     return (
       <div className="container">
-        <h1>Husband's Games</h1>
-        <div className="loading">Loading games...</div>
+        <div className="header">
+          <div className="top">
+            <h1>Husband's Games</h1>
+            <hr></hr>
+          </div>
+          <div className="loading">Loading games...</div>
+        </div>
       </div>
     );
   }
@@ -639,9 +644,14 @@ const App = () => {
   if (error) {
     return (
       <div className="container">
-        <h1>Husband's Games</h1>
-        <div className="error">{error}</div>
-        <button onClick={fetchGames} className="retry-btn">Retry</button>
+        <div className="header">
+          <div className="top">
+            <h1>Husband's Games</h1>
+            <hr></hr>
+          </div>
+          <div className="error">{error}</div>
+          <button onClick={fetchGames} className="retry-btn">Retry</button>
+        </div>
       </div>
     );
   }

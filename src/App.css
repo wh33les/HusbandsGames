@@ -619,131 +619,131 @@
 /* PUBLIC MODE COLUMN WIDTHS - Preserve your exact current layout */
 .public-mode .games-table th:nth-child(1),
 .public-mode .games-table td:nth-child(1) {
-  width: 200px;
-  min-width: 200px;
+  width: 200px !important;
+  min-width: 200px !important;
 }
 
 .public-mode .games-table th:nth-child(2),
 .public-mode .games-table td:nth-child(2) {
-  width: 87px;
-  min-width: 87px;
+  width: 87px !important;
+  min-width: 87px !important;
 }
 
 .public-mode .games-table th:nth-child(3),
 .public-mode .games-table td:nth-child(3) {
-  width: 70px;
-  min-width: 70px;
+  width: 70px !important;
+  min-width: 70px !important;
 }
 
 .public-mode .games-table th:nth-child(4),
 .public-mode .games-table td:nth-child(4) {
-  width: 116px;
-  min-width: 116px;
+  width: 116px !important;
+  min-width: 116px !important;
 }
 
 .public-mode .games-table th:nth-child(5),
 .public-mode .games-table td:nth-child(5) {
-  width: 75px;
-  min-width: 75px;
+  width: 75px !important;
+  min-width: 75px !important;
 }
 
 .public-mode .games-table th:nth-child(6),
 .public-mode .games-table td:nth-child(6) {
-  width: 76px;
-  min-width: 76px;
+  width: 76px !important;
+  min-width: 76px !important;
 }
 
 .public-mode .games-table th:nth-child(7),
 .public-mode .games-table td:nth-child(7) {
-  width: 93px;
-  min-width: 93px;
+  width: 93px !important;
+  min-width: 93px !important;
 }
 
 .public-mode .games-table th:nth-child(8),
 .public-mode .games-table td:nth-child(8) {
-  width: 85px;
-  min-width: 85px;
+  width: 85px !important;
+  min-width: 85px !important;
 }
 
 .public-mode .games-table th:nth-child(9),
 .public-mode .games-table td:nth-child(9) {
-  width: 40px;
-  min-width: 40px;
+  width: 40px !important;
+  min-width: 40px !important;
 }
 
 .public-mode .games-table th:nth-child(10),
 .public-mode .games-table td:nth-child(10) {
-  width: 195px;
-  min-width: 195px;
+  width: 195px !important;
+  min-width: 195px !important;
 }
 
 /* ADMIN MODE COLUMN WIDTHS - Actions column + shifted data columns */
 /* Actions column (first column in admin mode) */
 .admin-mode .actions-header,
 .admin-mode .actions-cell {
-  width: 65px;
-  min-width: 65px;
+  width: 65px !important;
+  min-width: 65px !important;
 }
 
 /* Data columns in admin mode (shifted by one position) */
 .admin-mode .games-table th:nth-child(2),
 .admin-mode .games-table td:nth-child(2) {
-  width: 200px;
-  min-width: 200px;
+  width: 200px !important;
+  min-width: 200px !important;
 }
 
 .admin-mode .games-table th:nth-child(3),
 .admin-mode .games-table td:nth-child(3) {
-  width: 87px;
-  min-width: 87px;
+  width: 87px !important;
+  min-width: 87px !important;
 }
 
 .admin-mode .games-table th:nth-child(4),
 .admin-mode .games-table td:nth-child(4) {
-  width: 70px;
-  min-width: 70px;
+  width: 70px !important;
+  min-width: 70px !important;
 }
 
 .admin-mode .games-table th:nth-child(5),
 .admin-mode .games-table td:nth-child(5) {
-  width: 116px;
-  min-width: 116px;
+  width: 116px !important;
+  min-width: 116px !important;
 }
 
 .admin-mode .games-table th:nth-child(6),
 .admin-mode .games-table td:nth-child(6) {
-  width: 75px;
-  min-width: 75px;
+  width: 75px !important;
+  min-width: 75px !important;
 }
 
 .admin-mode .games-table th:nth-child(7),
 .admin-mode .games-table td:nth-child(7) {
-  width: 76px;
-  min-width: 76px;
+  width: 76px !important;
+  min-width: 76px !important;
 }
 
 .admin-mode .games-table th:nth-child(8),
 .admin-mode .games-table td:nth-child(8) {
-  width: 93px;
-  min-width: 93px;
+  width: 93px !important;
+  min-width: 93px !important;
 }
 
 .admin-mode .games-table th:nth-child(9),
 .admin-mode .games-table td:nth-child(9) {
-  width: 85px;
-  min-width: 85px;
+  width: 85px !important;
+  min-width: 85px !important;
 }
 
 .admin-mode .games-table th:nth-child(10),
 .admin-mode .games-table td:nth-child(10) {
-  width: 40px;
-  min-width: 40px;
+  width: 40px !important;
+  min-width: 40px !important;
 }
 
 .admin-mode .games-table th:nth-child(11),
 .admin-mode .games-table td:nth-child(11) {
-  width: 195px;
-  min-width: 195px;
+  width: 195px !important;
+  min-width: 195px !important;
 }
 
 /* TABLE ROW STYLING */
