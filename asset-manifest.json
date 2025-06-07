@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/HusbandsGames/static/css/main.9950fa18.css",
-    "main.js": "/HusbandsGames/static/js/main.c3f236af.js",
+    "main.css": "/HusbandsGames/static/css/main.2c0789f0.css",
+    "main.js": "/HusbandsGames/static/js/main.ef3dcc99.js",
     "static/js/453.29d7fc53.chunk.js": "/HusbandsGames/static/js/453.29d7fc53.chunk.js",
     "index.html": "/HusbandsGames/index.html",
-    "main.9950fa18.css.map": "/HusbandsGames/static/css/main.9950fa18.css.map",
-    "main.c3f236af.js.map": "/HusbandsGames/static/js/main.c3f236af.js.map",
+    "main.2c0789f0.css.map": "/HusbandsGames/static/css/main.2c0789f0.css.map",
+    "main.ef3dcc99.js.map": "/HusbandsGames/static/js/main.ef3dcc99.js.map",
     "453.29d7fc53.chunk.js.map": "/HusbandsGames/static/js/453.29d7fc53.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9950fa18.css",
-    "static/js/main.c3f236af.js"
+    "static/css/main.2c0789f0.css",
+    "static/js/main.ef3dcc99.js"
   ]
 }
