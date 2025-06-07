@@ -41,6 +41,9 @@ class GameUpdate(BaseModel):
     opened: Optional[bool] = True
     price: Optional[float] = None
 
+    class Config:
+        from_attributes = True  # or orm_mode = True for older Pydantic
+
 
 class GameResponse(BaseModel):
     id: int
