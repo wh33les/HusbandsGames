@@ -496,270 +496,69 @@
   white-space: nowrap;
 }
 
-.games-table td,
-.actions-cell {
+.games-table td {
   border: 1px solid #e7b307;
   padding-left: 10px;
   padding-right: 10px;
-  padding-top: 5px;
-  padding-bottom: 5px;
 }
 
-/* =============================================================================
-   PRICE COLUMN DECIMAL ALIGNMENT
-   ============================================================================= */
-
-/* Price cell container for decimal alignment */
-.price-cell {
-  display: inline-flex;
-  align-items: baseline;
-  justify-content: flex-end;
-  width: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-
-  /* Monospace font for better alignment */
-}
-
-.price-cell.empty {
-  /* Empty price cells */
-  min-height: 1em;
-}
-
-/* Dollar part (including $ sign) - right-aligned */
-.price-dollars {
-  text-align: right;
-  min-width: 3ch;
-  /* Minimum width to accommodate $XX */
-}
-
-/* Cents part (including decimal point) - left-aligned, fixed width */
-.price-cents {
-  text-align: left;
-  width: 3ch;
-  /* Fixed width for decimal point and two digits */
-  margin-left: 0;
-}
-
-/* Ensure price column has consistent width and alignment */
-.games-table td:has(.price-cell) {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  /* Use tabular numbers for better alignment */
-}
-
-/* Fallback for browsers that don't support :has() */
-.games-table td[data-column="price"] {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ACTIONS COLUMN - Fixed to match your other headers */
-/* ACTIONS COLUMN - Wider for side-by-side buttons */
-.actions-header {
-  width: 65px;
-  /* Increased from 65px */
-  min-width: 65px;
-  text-align: left;
-  padding-left: 20px;
-  padding-right: 10px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  vertical-align: middle !important;
-
-  background: #000000;
-  font-weight: 600;
-  font-size: 16px;
-  color: #e7b307;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  border: 1px solid #e7b307;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  line-height: 1.2;
-}
-
-/* Actions cell with no padding - just match the header width */
-.actions-cell {
-  text-align: center;
-}
-
-.edit-btn,
-.delete-btn-small {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  /* Slightly smaller to fit better */
-  padding: 3px 4px;
-  /* Reduced padding */
-  margin: 0;
-  /* Remove margin, use gap instead */
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  /* Reduced from 24px */
-  height: 20px;
-  /* Reduced from 24px */
-  flex-shrink: 0;
-  /* Prevent buttons from shrinking */
-}
-
-.edit-btn:hover {
-  background: rgba(231, 179, 7, 0.2);
-  transform: scale(1.1);
-}
-
-.delete-btn-small:hover {
-  background: rgba(220, 53, 69, 0.2);
-  transform: scale(1.1);
-}
-
-.edit-btn:active {
-  transform: scale(0.95);
-}
-
-.delete-btn-small:active {
-  transform: scale(0.95);
-}
-
-.edit-btn:disabled,
-.delete-btn-small:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* PUBLIC MODE COLUMN WIDTHS - Preserve your exact current layout */
-.public-mode .games-table th:nth-child(1),
-.public-mode .games-table td:nth-child(1) {
+/* COLUMN WIDTHS */
+.games-table th:nth-child(1),
+.games-table td:nth-child(1) {
   width: 200px;
   min-width: 200px;
 }
 
-.public-mode .games-table th:nth-child(2),
-.public-mode .games-table td:nth-child(2) {
+.games-table th:nth-child(2),
+.games-table td:nth-child(2) {
   width: 87px;
   min-width: 87px;
 }
 
-.public-mode .games-table th:nth-child(3),
-.public-mode .games-table td:nth-child(3) {
+.games-table th:nth-child(3),
+.games-table td:nth-child(3) {
   width: 70px;
   min-width: 70px;
 }
 
-.public-mode .games-table th:nth-child(4),
-.public-mode .games-table td:nth-child(4) {
+.games-table th:nth-child(4),
+.games-table td:nth-child(4) {
   width: 116px;
   min-width: 116px;
 }
 
-.public-mode .games-table th:nth-child(5),
-.public-mode .games-table td:nth-child(5) {
-  width: 75px;
-  min-width: 75px;
+.games-table th:nth-child(5),
+.games-table td:nth-child(5) {
+  width: 62px;
+  min-width: 62px;
 }
 
-.public-mode .games-table th:nth-child(6),
-.public-mode .games-table td:nth-child(6) {
+.games-table th:nth-child(6),
+.games-table td:nth-child(6) {
   width: 76px;
   min-width: 76px;
 }
 
-.public-mode .games-table th:nth-child(7),
-.public-mode .games-table td:nth-child(7) {
+.games-table th:nth-child(7),
+.games-table td:nth-child(7) {
   width: 93px;
   min-width: 93px;
 }
 
-.public-mode .games-table th:nth-child(8),
-.public-mode .games-table td:nth-child(8) {
+.games-table th:nth-child(8),
+.games-table td:nth-child(8) {
   width: 85px;
   min-width: 85px;
 }
 
-.public-mode .games-table th:nth-child(9),
-.public-mode .games-table td:nth-child(9) {
+.games-table th:nth-child(9),
+.games-table td:nth-child(9) {
   width: 40px;
   min-width: 40px;
 }
 
-.public-mode .games-table th:nth-child(10),
-.public-mode .games-table td:nth-child(10) {
-  width: 195px;
-  min-width: 195px;
-}
-
-/* ADMIN MODE COLUMN WIDTHS - Actions column + shifted data columns */
-/* Actions column (first column in admin mode) */
-.admin-mode .actions-header,
-.admin-mode .actions-cell {
-  width: 65px;
-  min-width: 65px;
-}
-
-/* Data columns in admin mode (shifted by one position) */
-.admin-mode .games-table th:nth-child(2),
-.admin-mode .games-table td:nth-child(2) {
-  width: 200px;
-  min-width: 200px;
-}
-
-.admin-mode .games-table th:nth-child(3),
-.admin-mode .games-table td:nth-child(3) {
-  width: 87px;
-  min-width: 87px;
-}
-
-.admin-mode .games-table th:nth-child(4),
-.admin-mode .games-table td:nth-child(4) {
-  width: 70px;
-  min-width: 70px;
-}
-
-.admin-mode .games-table th:nth-child(5),
-.admin-mode .games-table td:nth-child(5) {
-  width: 116px;
-  min-width: 116px;
-}
-
-.admin-mode .games-table th:nth-child(6),
-.admin-mode .games-table td:nth-child(6) {
-  width: 75px;
-  min-width: 75px;
-}
-
-.admin-mode .games-table th:nth-child(7),
-.admin-mode .games-table td:nth-child(7) {
-  width: 76px;
-  min-width: 76px;
-}
-
-.admin-mode .games-table th:nth-child(8),
-.admin-mode .games-table td:nth-child(8) {
-  width: 93px;
-  min-width: 93px;
-}
-
-.admin-mode .games-table th:nth-child(9),
-.admin-mode .games-table td:nth-child(9) {
-  width: 85px;
-  min-width: 85px;
-}
-
-.admin-mode .games-table th:nth-child(10),
-.admin-mode .games-table td:nth-child(10) {
-  width: 40px;
-  min-width: 40px;
-}
-
-.admin-mode .games-table th:nth-child(11),
-.admin-mode .games-table td:nth-child(11) {
+.games-table th:nth-child(10),
+.games-table td:nth-child(10) {
   width: 195px;
   min-width: 195px;
 }
