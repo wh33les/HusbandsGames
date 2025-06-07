@@ -543,62 +543,27 @@ async def create_game(
         created_at=db_game.created_at
     )
 
-@app.put("/admin/games/{game_id}", response_model=GameResponse)
+@app.put("/admin/games/{game_id}")
 async def update_game(
     game_id: int, 
-    game_update: GameUpdate, 
-    current_user: str = Depends(verify_admin_token),
-    db: Session = Depends(get_db)
+    game_data: GameUpdate, 
+    db: Session = Depends(get_db),  # ← Use dependency injection
+    current_user = Depends(get_current_admin)
 ):
-    """
-    Update an existing game in the database.
+    # Query the existing game
+    existing_game = db.query(models.Game).filter(models.Game.id == game_id).first()    
+    if not existing_game:
+        raise HTTPException(status_code=404, detail="Game not found")
     
-    This endpoint allows admin users to modify existing games.
-    Only provided fields will be updated (partial updates supported).
+    # Update the game with new data
+    for field, value in game_data.dict(exclude_unset=True).items():
+        setattr(existing_game, field, value)
     
-    Args:
-        game_id: ID of the game to update
-        game_update: GameUpdate object with fields to modify
-        current_user: Authenticated admin username (from JWT token)
-        db: Database session (injected by dependency)
-        
-    Returns:
-        GameResponse with the updated game data
-        
-    Raises:
-        HTTPException: 404 if game with given ID doesn't exist
-        
-    Security:
-        Requires valid admin JWT token
-        
-    Note: This is currently a placeholder implementation.
-    The commented code shows how to implement full update functionality.
-    """
+    # Save to database
+    db.commit()
+    db.refresh(existing_game)
     
-    # TODO: Implement full update functionality
-    # The commented code below shows the proper implementation:
-    
-    # # Find the game in the database
-    # db_game = db.query(models.Game).filter(models.Game.id == game_id).first()
-    # if not db_game:
-    #     raise HTTPException(status_code=404, detail="Game not found")
-    # 
-    # # Update only the fields that were provided
-    # for field, value in game_update.dict(exclude_unset=True).items():
-    #     setattr(db_game, field, value)
-    # 
-    # # Save changes to database
-    # db.commit()
-    # db.refresh(db_game)
-    # return db_game
-    
-    # Placeholder response for now:
-    return GameResponse(
-        id=game_id,
-        created_at=datetime.utcnow(),
-        title="Updated Game",
-        platform="Updated Platform"
-    )
+    return existing_game
 
 @app.delete("/admin/games/{game_id}")
 async def delete_game(
