@@ -274,6 +274,7 @@
 .container {
   max-width: 100%;
   margin: 0 auto;
+  padding: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
@@ -283,6 +284,7 @@
   width: 104%;
   flex-wrap: wrap;
   gap: 10px;
+<<<<<<< HEAD
   margin-left: -35px;
   margin-top: -30px;
 }
@@ -291,6 +293,10 @@
   width: 96%;
   margin-left: -16px;
   margin-top: -15px;
+=======
+  margin-left: -52px;
+  margin-top: -45px;
+>>>>>>> d2bc7a675be16e7fec30ddba2f86dcac4ba23568
 }
 
 .header h1 {
@@ -303,7 +309,7 @@
   display: flex;
   gap: 0px;
   flex-direction: column;
-  margin-left: -30px;
+  margin-left: -23px;
   margin-top: -30px;
   height: 65px;
 }
@@ -341,7 +347,10 @@
 .admin-login-btn {
   margin-top: -30px;
   margin-bottom: 40px;
+<<<<<<< HEAD
   margin-left: 12px;
+=======
+>>>>>>> d2bc7a675be16e7fec30ddba2f86dcac4ba23568
 }
 
 .admin-login-btn:hover,
@@ -406,7 +415,11 @@
   gap: 40px;
   justify-content: flex-end;
   margin-left: auto;
+<<<<<<< HEAD
   padding-right: 20px;
+=======
+  padding-right: 50px;
+>>>>>>> d2bc7a675be16e7fec30ddba2f86dcac4ba23568
   margin-bottom: -15px;
 }
 
@@ -415,11 +428,6 @@
   margin-top: -25px;
   justify-content: flex-end;
   margin-left: auto;
-}
-
-.right-side-container {
-  margin-top: -25px;
-  margin-left: -10px;
 }
 
 /* LOADING AND ERROR STATES */
@@ -453,16 +461,25 @@
 }
 
 /* =============================================================================
-   TABLE STYLING
+   TABLE STYLING WITH CRUD OPERATIONS
    ============================================================================= */
 
 .table-container {
   overflow: auto;
   background: #000000;
+<<<<<<< HEAD
   margin-top: 20px;
   margin-left: -15px;
   margin-right: 20px;
   width: 93%;
+=======
+  margin-left: -30px;
+  width: fit-content;
+
+  /* Set to exact width needed for all columns */
+
+  /* Fallback for smaller screens */
+>>>>>>> d2bc7a675be16e7fec30ddba2f86dcac4ba23568
   /*border: 5px solid blue;*/
 }
 
@@ -470,12 +487,12 @@
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-  min-width: 1000px;
+  min-width: 800px;
   font-size: 14px;
-  margin: 0 auto;
   background: #19181a;
 }
 
+/* TABLE HEADERS AND CELLS - BASIC STYLING WITH VERTICAL CENTERING */
 .games-table th {
   background: #000000;
   font-weight: 600;
@@ -485,17 +502,15 @@
   top: 0;
   z-index: 10;
   text-align: left;
-  padding-left: -20px;
+  /*padding: 12px 10px;*/
   border: 1px solid #e7b307;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  padding-right: 10px;
-  vertical-align: top;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  vertical-align: middle;
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.2;
 }
 
+<<<<<<< HEAD
 .games-table td,
 .actions-cell {
   border: 1px solid #e7b307;
@@ -643,10 +658,81 @@
 
 .public-mode .games-table th:nth-child(2),
 .public-mode .games-table td:nth-child(2) {
-  width: 87px;
-  min-width: 87px;
+=======
+.games-table td {
+  padding: 10px 10px;
+  border: 1px solid #e7b307;
+  vertical-align: middle;
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.3;
+  text-align: left;
 }
 
+/* ACTIONS COLUMN - SPECIAL STYLING */
+.actions-header {
+  text-align: left;
+  padding: 12px 20px;
+  vertical-align: middle;
+}
+
+/* CONSISTENT COLUMN WIDTHS FOR ALL MODES */
+/* Actions column (only present in admin mode) */
+.admin-mode .actions-header,
+.admin-mode .actions-cell {
+  width: 60px;
+}
+
+/* Title column */
+.admin-mode th:nth-child(2),
+.admin-mode td:nth-child(2),
+.public-mode th:nth-child(1),
+.public-mode td:nth-child(1) {
+  width: 250px;
+}
+
+/* Platform column */
+.admin-mode th:nth-child(3),
+.admin-mode td:nth-child(3),
+.public-mode th:nth-child(2),
+.public-mode td:nth-child(2) {
+  width: 100px;
+}
+
+/* Genre column */
+.admin-mode th:nth-child(4),
+.admin-mode td:nth-child(4),
+.public-mode th:nth-child(3),
+.public-mode td:nth-child(3) {
+  width: 80px;
+}
+
+/* Release Year column */
+.admin-mode th:nth-child(5),
+.admin-mode td:nth-child(5),
+.public-mode th:nth-child(4),
+.public-mode td:nth-child(4) {
+  width: 125px;
+}
+
+/* Price column */
+.admin-mode th:nth-child(6),
+.admin-mode td:nth-child(6),
+.public-mode th:nth-child(5),
+.public-mode td:nth-child(5) {
+  width: 75px;
+}
+
+/* Region column */
+.admin-mode th:nth-child(7),
+.admin-mode td:nth-child(7),
+.public-mode th:nth-child(6),
+.public-mode td:nth-child(6) {
+>>>>>>> d2bc7a675be16e7fec30ddba2f86dcac4ba23568
+  width: 87px;
+}
+
+<<<<<<< HEAD
 .public-mode .games-table th:nth-child(3),
 .public-mode .games-table td:nth-child(3) {
   width: 70px;
@@ -762,6 +848,81 @@
 .admin-mode .games-table td:nth-child(11) {
   width: 195px;
   min-width: 195px;
+=======
+/* Publisher column */
+.admin-mode th:nth-child(8),
+.admin-mode td:nth-child(8),
+.public-mode th:nth-child(7),
+.public-mode td:nth-child(7) {
+  width: 145px;
+}
+
+/* Opened column */
+.admin-mode th:nth-child(9),
+.admin-mode td:nth-child(9),
+.public-mode th:nth-child(8),
+.public-mode td:nth-child(8) {
+  width: 95px;
+}
+
+/* Id column */
+.admin-mode th:nth-child(10),
+.admin-mode td:nth-child(10),
+.public-mode th:nth-child(9),
+.public-mode td:nth-child(9) {
+  width: 52px;
+}
+
+/* Created column */
+.admin-mode th:nth-child(11),
+.admin-mode td:nth-child(11),
+.public-mode th:nth-child(10),
+.public-mode td:nth-child(10) {
+  width: 210px;
+}
+
+/* EDIT AND DELETE BUTTONS IN TABLE */
+.edit-btn,
+.delete-btn-small {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 6px;
+  margin: 0 2px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+}
+
+.edit-btn:hover {
+  background: rgba(231, 179, 7, 0.2);
+  transform: scale(1.1);
+}
+
+.delete-btn-small:hover {
+  background: rgba(220, 53, 69, 0.2);
+  transform: scale(1.1);
+}
+
+.edit-btn:active {
+  transform: scale(0.95);
+}
+
+.delete-btn-small:active {
+  transform: scale(0.95);
+}
+
+.edit-btn:disabled,
+.delete-btn-small:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+>>>>>>> d2bc7a675be16e7fec30ddba2f86dcac4ba23568
 }
 
 /* TABLE ROW STYLING */
@@ -769,6 +930,11 @@
   background-color: #5a6268;
   color: #000000;
   font-weight: 600;
+}
+
+.games-table tbody tr:nth-child(even) {
+  background-color: #19181a;
+  color: #ffffff;
 }
 
 /* SORTABLE HEADERS */
@@ -828,6 +994,97 @@
 }
 
 /* =============================================================================
+   DELETE CONFIRMATION MODAL
+   ============================================================================= */
+
+.delete-content {
+  padding: 20px 15px;
+  background: #19181a;
+  color: #e7b307;
+  text-align: center;
+}
+
+.delete-content p {
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+}
+
+.delete-content strong {
+  color: #db949b;
+}
+
+.delete-content small {
+  color: #999;
+  font-style: italic;
+}
+
+/* CANCEL AND DELETE BUTTONS IN MODAL */
+.cancel-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  text-align: center;
+  min-height: 36px;
+  background: #6c757d;
+  color: white;
+  margin-right: 8px;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: #5a6268;
+}
+
+.delete-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  text-align: center;
+  min-height: 36px;
+  background: #dc3545;
+  color: white;
+}
+
+.delete-btn:hover:not(:disabled) {
+  background: #c82333;
+}
+
+.cancel-btn:disabled,
+.delete-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* MODAL ACTIONS FOR DELETE CONFIRMATION */
+.admin-login-modal .modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px;
+  background: #19181a;
+  border-top: 1px solid #333;
+}
+
+/* SUCCESS/ERROR MESSAGES */
+.success-message {
+  color: #28a745;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin: 10px 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* =============================================================================
    MOBILE RESPONSIVENESS
    ============================================================================= */
 
@@ -880,5 +1137,20 @@
 
   .actions {
     justify-content: center;
+  }
+
+  .actions-header,
+  .actions-cell {
+    width: 80px;
+    min-width: 80px;
+  }
+
+  .edit-btn,
+  .delete-btn-small {
+    font-size: 14px;
+    padding: 2px 4px;
+    margin: 0 1px;
+    min-width: 20px;
+    height: 20px;
   }
 }

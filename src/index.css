@@ -1,6 +1,10 @@
 /* Styles for the pages in my website */
 body {
+<<<<<<< HEAD
   background-color: #e2b87d;
+=======
+  background-color: #f8c96c;
+>>>>>>> d2bc7a675be16e7fec30ddba2f86dcac4ba23568
   font-family: Helvetica;
   opacity: 0.9;
 }
