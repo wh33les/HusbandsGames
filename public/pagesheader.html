@@ -1,0 +1,40 @@
+<!--Header for all pages - shows all nav with blank space for current page -->
+<h1>Ashley K. W. Warren </h1>
+<hr>
+
+<div class="buttons projects-nav">| <a href="../Projects/projects.html">Projects</a></div>
+<div class="buttons academia-nav">| <a href="../Academia/academia.html">Academia</a></div>
+<div class="buttons home-nav" style="text-align:right; float:right"><a href="../index.html">Home</a> |</div>
+
+<script>
+    const currentPath = window.location.pathname;
+    $('.buttons a').attr('target', '_self');
+    // Define page mappings - easy to add new pages here
+    const pages = [
+        {
+            // Homepage: exact match only
+            condition: currentPath.endsWith('/index.html'),
+            selector: '.home-nav',
+            replacement: '<b>Home </b>|'
+        },
+        {
+            // Projects: folder or filename match
+            condition: currentPath.endsWith('projects.html'),
+            selector: '.projects-nav',
+            replacement: '| <b>Projects</b>'
+        },
+        {
+            // Academia: folder or filename match
+            condition: currentPath.endsWith('academia.html'),
+            selector: '.academia-nav',
+            replacement: '| <b>Academia</b>'
+        }
+    ];
+
+    // Find and replace current page's navigation with blank space
+    pages.forEach(page => {
+        if (page.condition) {
+            $(page.selector).html(page.replacement);
+        }
+    });
+</script>
