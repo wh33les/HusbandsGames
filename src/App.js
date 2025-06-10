@@ -385,6 +385,7 @@ const App = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [lastModified, setLastModified] = useState('');
   const [sortConfig, setSortConfig] = useState({
     key: null,
     direction: 'asc'
@@ -410,6 +411,11 @@ const App = () => {
       setAdminUser(JSON.parse(savedUser));
       setIsAdmin(true);
     }
+
+    // Set last modified date
+    const date = document.lastModified;
+    const lastModifiedDate = new Date(date);
+    setLastModified(lastModifiedDate.toString());
   }, []);
 
   useEffect(() => {
@@ -662,16 +668,15 @@ const App = () => {
 
   if (error && data.length === 0) {
     return (
-      <div className='container'>
+      <div className="container">
         <Header>
           <div className="error" style={{ textAlign: 'center' }}>
-            <div style={{ textAlign: 'center', width: '100%', backgroundColor: '#f8d7da', color: '#721c24' }}>{error}</div>
+            <div style={{ textAlign: 'center', width: '100%' }}>{error}</div>
           </div>
-          <div style={{ marginTop: '-15px', marginLeft: '-20px' }}>
+          <div style={{ textAlign: 'center', marginTop: '10px' }}>
             <button onClick={fetchGames} className="retry-btn">Retry</button>
           </div>
         </Header>
-
       </div>
     );
   }
@@ -679,8 +684,8 @@ const App = () => {
   return (
     <div className="container">
       <Header>
-        <p style={{ width: '96%', marginTop: '15px' }}>A database of Husband's video game collection. Husband can log in to perform CRUD operations. Work in progress, stay tuned for more features and games.</p>
-        <p style={{ marginTop: '-10px', marginBottom: '50px' }}>Click on the table headers to sort!</p>
+        <p style={{ width: '96%' }}>A database of Husband's video game collection. Husband can log in to perform CRUD operations. Work in progress, stay tuned for more features and games.</p>
+        <p style={{ marginBottom: '50px' }}>Click on the table headers to sort!</p>
 
         <div className="right-side-container">
           {isAdmin ? (
@@ -825,6 +830,12 @@ const App = () => {
           gameToEdit={gameToEdit}
         />
       )}
+
+      {/* Last modified date */}
+      <div style={{ marginTop: '30px', marginLeft: '-50px', marginBottom: '-50px' }}>
+        <hr style={{ width: '102%' }} />
+        <p style={{ fontSize: '16px', color: '#e7b307', marginTop: '-3px', marginLeft: '14px' }}><em>Last modified:</em> {lastModified}</p>
+      </div>
     </div>
   );
 };
