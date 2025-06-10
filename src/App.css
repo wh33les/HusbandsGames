@@ -247,6 +247,7 @@
   border-radius: 6px;
   margin: 0px 0;
   font-size: 14px;
+  width: 80%;
 }
 
 /* Overflow prevention */
@@ -347,7 +348,8 @@
 .admin-login-btn:hover,
 .logout-btn:hover,
 .add-btn:hover,
-.export-btn:hover {
+.export-btn:hover,
+.retry-btn:hover {
   background: #5a6268;
 }
 
@@ -414,22 +416,49 @@
 }
 
 /* LOADING AND ERROR STATES */
-.loading,
-.error {
+.loading {
   text-align: center;
   padding: 40px;
   font-size: 1.2em;
-}
-
-.loading {
   color: #666;
 }
 
 .error {
-  color: #dc3545;
-  background: #f8d7da;
+  background-color: #f8d7da;
+  color: #721c24;
   border: 1px solid #f5c6cb;
-  border-radius: 6px;
+  border-radius: 4px;
+  padding: 12px;
+  margin: 10px 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.error-dismiss-btn {
+  background: none;
+  border: none;
+  color: #721c24;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  text-decoration: underline;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.error-dismiss-btn:hover {
+  background: rgba(114, 28, 36, 0.1);
+  text-decoration: none;
 }
 
 .empty-state {
@@ -843,6 +872,16 @@
     font-size: 16px;
     padding: 12px;
   }
+
+  .error {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .error-dismiss-btn {
+    align-self: center;
+    margin-top: 8px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -862,5 +901,15 @@
 
   .actions {
     justify-content: center;
+  }
+
+  .error {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .error-dismiss-btn {
+    align-self: center;
+    margin-top: 8px;
   }
 }

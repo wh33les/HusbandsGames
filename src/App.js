@@ -2,6 +2,19 @@ import React, { useState, useEffect, useMemo } from 'react';
 import config from './config';
 import './App.css';
 
+const Header = ({ children }) => (
+  <div className="header">
+    <div className="top">
+      <h1>Husband's Games</h1>
+      <hr></hr>
+      <div className="buttons projects-nav" style={{ textAlign: 'right', float: 'right' }}>
+        <a href="https://wh33les.github.io/Projects/projects.html">Back to projects</a> |
+      </div>
+    </div>
+    {children}
+  </div>
+);
+
 const AdminLoginModal = ({ isOpen, onClose, onLogin, isLoading }) => {
   const [credentials, setCredentials] = useState({
     username: 'admin',
@@ -440,6 +453,7 @@ const App = () => {
     setIsAdmin(true);
     localStorage.setItem('admin_token', authToken);
     localStorage.setItem('admin_user', JSON.stringify(userData));
+    setError(null); // Clear any existing errors
   };
 
   const handleAdminLogout = () => {
@@ -448,10 +462,12 @@ const App = () => {
     setIsAdmin(false);
     localStorage.removeItem('admin_token');
     localStorage.removeItem('admin_user');
+    setError(null); // Clear any existing errors
   };
 
   const handleAddGame = async (gameData) => {
     setIsAddingGame(true);
+    setError(null); // Clear any existing errors
 
     try {
       const response = await fetch(`${config.API_URL}/admin/games`, {
@@ -470,6 +486,7 @@ const App = () => {
       const newGame = await response.json();
       setData([...data, newGame]);
       setShowAddModal(false);
+      setError(null); // Clear errors on success
 
     } catch (error) {
       console.error('Error adding game:', error);
@@ -482,10 +499,12 @@ const App = () => {
   const handleEditGame = (game) => {
     setGameToEdit(game);
     setShowEditModal(true);
+    setError(null); // Clear any existing errors
   };
 
   const handleUpdateGame = async (updatedGameData) => {
     setIsEditingGame(true);
+    setError(null); // Clear any existing errors
 
     try {
       const response = await fetch(`${config.API_URL}/admin/games/${updatedGameData.id}`, {
@@ -508,6 +527,7 @@ const App = () => {
 
       setShowEditModal(false);
       setGameToEdit(null);
+      setError(null); // Clear errors on success
 
     } catch (error) {
       console.error('Error updating game:', error);
@@ -522,6 +542,8 @@ const App = () => {
       return;
     }
 
+    setError(null); // Clear any existing errors
+
     try {
       const response = await fetch(`${config.API_URL}/admin/games/${gameId}`, {
         method: 'DELETE',
@@ -535,6 +557,7 @@ const App = () => {
       }
 
       setData(data.filter(game => game.id !== gameId));
+      setError(null); // Clear errors on success
 
     } catch (error) {
       console.error('Error deleting game:', error);
@@ -630,41 +653,35 @@ const App = () => {
   if (isLoading) {
     return (
       <div className="container">
-        <div className="header">
-          <div className="top">
-            <h1>Husband's Games</h1>
-            <hr></hr>
-          </div>
-          <div className="loading">Loading games...</div>
-        </div>
+        <Header>
+          <div className="loading" style={{ textAlign: 'center' }}>Loading games...</div>
+        </Header>
       </div>
     );
   }
 
-  if (error) {
+  if (error && data.length === 0) {
     return (
-      <div className="container">
-        <div className="header">
-          <div className="top">
-            <h1>Husband's Games</h1>
-            <hr></hr>
+      <div className='container'>
+        <Header>
+          <div className="error" style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: 'center', width: '100%', backgroundColor: '#f8d7da', color: '#721c24' }}>{error}</div>
           </div>
-          <div className="error">{error}</div>
-          <button onClick={fetchGames} className="retry-btn">Retry</button>
-        </div>
+          <div style={{ marginTop: '-15px', marginLeft: '-20px' }}>
+            <button onClick={fetchGames} className="retry-btn">Retry</button>
+          </div>
+        </Header>
+
       </div>
     );
   }
 
   return (
     <div className="container">
-      <div className="header">
-        <div className="top">
-          <h1>Husband's Games</h1>
-          <hr></hr>
-          <p>A database of Husband's video game collection. Husband can log in to perform CRUD operations. Work in progress, stay tuned for more features and games.</p>
-          <p>Click on the table headers to sort!</p>
-        </div>
+      <Header>
+        <p style={{ width: '96%', marginTop: '15px' }}>A database of Husband's video game collection. Husband can log in to perform CRUD operations. Work in progress, stay tuned for more features and games.</p>
+        <p style={{ marginTop: '-10px', marginBottom: '50px' }}>Click on the table headers to sort!</p>
+
         <div className="right-side-container">
           {isAdmin ? (
             <div className="admin-info">
@@ -688,7 +705,20 @@ const App = () => {
             </button>
           </div>
         </div>
-      </div>
+      </Header>
+
+      {/* Error display for admin operation errors */}
+      {error && (
+        <div className="error" style={{ margin: '20px 0', flexDirection: 'column', alignItems: 'flex-start', gap: '10px' }}>
+          <div style={{ textAlign: 'center', width: '100%' }}>{error}</div>
+          <button
+            onClick={() => setError(null)}
+            className="retry-btn"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
 
       <div className="controls">
         <div className="stats">
